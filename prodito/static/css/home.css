@@ -1,0 +1,100 @@
+footer {
+    background-color: #00275a;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor principal en 3 columnas (modo escritorio) */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+/* Secciones del Footer */
+.footer-section {
+    width: 30%; 
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-section h5 {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+
+.instagram-logo {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.3s ease;
+}
+
+.instagram-logo:hover {
+    transform: scale(1.1);
+}
+
+
+.map-frame {
+    width: 80%;
+    height: 180px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 3px 6px rgba(255, 255, 255, 0.79);
+}
+
+
+.footer-line {
+    border: 0;
+    height: 1px;
+    background-color: white;
+    margin: 5px auto;
+    width: 80%;
+}
+
+
+.footer-bottom {
+    text-align: center;
+    font-size: 12px;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contactisimo {
+    color: white;
+    text-decoration: none;
+    text-decoration-line: none;
+}
+
+.contactisimo2 {
+    color: white;
+    text-decoration: none;
+    text-decoration-line: none;
+}
+
+.contactisimo:hover {
+    transform: scale(1.1);
+}
+
+.contactisimo2:hover {
+    transform: scale(1.1);
+}

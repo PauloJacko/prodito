@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Bienvenida</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+          <!-- Saludos de Bienvenida-->
+          <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end">
+            <h1 class="mb-3">¡Bienvenido a Prodito!</h1>
+            <p class="text-center">Prodito es tu plataforma para organizar proyectos de manera sencilla.</p>
+          </div>
+      
+          <!-- Formulario LOGIN sin nada programado -->
+          <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
+            <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Correo electrónico</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">No compartiremos tu correo con nadie.</small>
+              </div>             
+              <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>        
+              <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>      
+              <div class="text-center mt-3">
+                <a href="#" class="btn btn-link">Crear una cuenta</a>
+              </div>
+            </form>
+          </div>
+
+          
+<!-- FOOTER -->
+      <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
+              <svg class="bi" width="30" height="24" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Prodito</span>
+          </div>
+      
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="Instagram">
+                    <img src="{% static 'img/logo-instagram.png' %}" width="24" height="24" alt="Instagram">
+                </a>
+            </li>
+            <li class="ms-3">
+                <a class="text-body-secondary" href="#" aria-label="Facebook">
+                    <img src="{% static 'img/logo-facebook.png' %}" width="24" height="24" alt="Facebook">
+                </a>
+            </li>
+        </ul>
+        </footer>
+      </div>
+</body>
+</html>
