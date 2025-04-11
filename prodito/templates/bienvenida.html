@@ -9,14 +9,22 @@
     <link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
 </head>
 
-<body>
-    <div class="container">
-        <div class="row">
-          <!-- Saludos de Bienvenida-->
-          <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end">
-            <h1 class="mb-3">¡Bienvenido a Prodito!</h1>
-            <p class="text-center">Prodito es tu plataforma para organizar proyectos de manera sencilla.</p>
-          </div>
+<!--TEXTO DE LA IZQUIERDA-->
+<div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end text-center">
+  <div class="d-flex align-items-center mb-3">
+    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png" 
+         alt="Monito Pródigo" 
+         class="img-fluid" 
+         style="width: 80px; height: auto; margin-right: 10px;">
+    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png" 
+         alt="Logo Pródigo" 
+         class="img-fluid" 
+         style="width: 150px; height: auto;">
+  </div>
+  <h1 class="mb-3">¡Bienvenido a Prodito!</h1>
+  <p class="text-center">Organiza tu día a día con pródito, tu asistente virtual que te ayuda a cumplir objetivos. ¡Haz que tu pródito evolucione mientras alcanzas tus metas!.</p>
+
+</div>
       
           <!-- Formulario LOGIN sin nada programado -->
           <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
@@ -51,12 +59,12 @@
           <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
             <li class="ms-3">
                 <a class="text-body-secondary" href="#" aria-label="Instagram">
-                    <img src="{% static 'img/logo-instagram.png' %}" width="24" height="24" alt="Instagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24" alt="Instagram">
                 </a>
             </li>
             <li class="ms-3">
                 <a class="text-body-secondary" href="#" aria-label="Facebook">
-                    <img src="{% static 'img/logo-facebook.png' %}" width="24" height="24" alt="Facebook">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook">
                 </a>
             </li>
         </ul>
