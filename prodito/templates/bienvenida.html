@@ -1,74 +1,83 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Bienvenida</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Bienvenida</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
 </head>
 
 <!--TEXTO DE LA IZQUIERDA-->
 <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end text-center">
   <div class="d-flex align-items-center mb-3">
-    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png" 
-         alt="Monito Pródigo" 
-         class="img-fluid" 
-         style="width: 80px; height: auto; margin-right: 10px;">
-    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png" 
-         alt="Logo Pródigo" 
-         class="img-fluid" 
-         style="width: 150px; height: auto;">
+    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png"
+      alt="Monito Pródigo" class="img-fluid" style="width: 80px; height: auto; margin-right: 10px;">
+    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png"
+      alt="Logo Pródigo" class="img-fluid" style="width: 150px; height: auto;">
   </div>
   <h1 class="mb-3">¡Bienvenido a Prodito!</h1>
-  <p class="text-center">Organiza tu día a día con pródito, tu asistente virtual que te ayuda a cumplir objetivos. ¡Haz que tu pródito evolucione mientras alcanzas tus metas!.</p>
+  <p class="text-center">Organiza tu día a día con pródito, tu asistente virtual que te ayuda a cumplir objetivos. ¡Haz
+    que tu pródito evolucione mientras alcanzas tus metas!.</p>
 
 </div>
-      
-          <!-- Formulario LOGIN sin nada programado -->
-          <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
-            <form>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Correo electrónico</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">No compartiremos tu correo con nadie.</small>
-              </div>             
-              <div class="form-group">
-                <label for="exampleInputPassword1">Contraseña</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-              </div>        
-              <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>      
-              <div class="text-center mt-3">
-                <a href="#" class="btn btn-link">Crear una cuenta</a>
-              </div>
-            </form>
-          </div>
 
-          
+<!-- Formulario LOGIN sin nada programado -->
+<div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Correo electrónico</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">No compartiremos tu correo con nadie.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Contraseña</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>
+    <div class="text-center mt-3">
+      <a href="#" class="btn btn-link">Crear una cuenta</a>
+    </div>
+
+  </form>
+  <a href="{% url 'google_login' %}">
+    <button>Iniciar sesión con Google</button>
+  </a>
+</div>
+
+
 <!-- FOOTER -->
-      <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
-              <svg class="bi" width="30" height="24" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
-            </a>
-            <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Prodito</span>
-          </div>
-      
-          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3">
-                <a class="text-body-secondary" href="#" aria-label="Instagram">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24" alt="Instagram">
-                </a>
-            </li>
-            <li class="ms-3">
-                <a class="text-body-secondary" href="#" aria-label="Facebook">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook">
-                </a>
-            </li>
-        </ul>
-        </footer>
-      </div>
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
+        <svg class="bi" width="30" height="24" aria-hidden="true">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+      </a>
+      <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Prodito</span>
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+      <li class="ms-3">
+        <a class="text-body-secondary" href="#" aria-label="Instagram">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24"
+            alt="Instagram">
+        </a>
+      </li>
+      <li class="ms-3">
+        <a class="text-body-secondary" href="#" aria-label="Facebook">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24"
+            height="24" alt="Facebook">
+        </a>
+      </li>
+    </ul>
+  </footer>
+</div>
 </body>
+
 </html>
