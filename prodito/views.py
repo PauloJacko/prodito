@@ -47,6 +47,8 @@ def oauth2callback(request):
     ).json()
 
     access_token = token_res.get("access_token")
+
+    # useful when using Google APIs
     id_token = token_res.get("id_token")
 
     user_info = requests.get(
@@ -57,9 +59,7 @@ def oauth2callback(request):
     email = user_info["email"]
     name = user_info.get("name", email)
 
-    user, created = User.objects.get_or_create(
-        username=email, defaults={"first_name": name}
-    )
+    user, _ = User.objects.get_or_create(username=email, defaults={"first_name": name})
     login(request, user)
 
     return redirect("home")
