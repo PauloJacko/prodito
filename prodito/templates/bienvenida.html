@@ -1,90 +1,63 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Bienvenida</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
-</head>
-<body>
-    <div class="container">
-        <div class="row">
-            <!-- Columna de Bienvenida -->
-            <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end text-center py-5">
-                <div class="d-flex align-items-center mb-3">
-                    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png" 
-                         alt="Monito pródito" 
-                         class="monito-img">
-                    <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png" 
-                         alt="Logo pródito" 
-                         class="logo-img">
-                </div>
-                <h1 class="mb-3">¡Bienvenidos!</h1>
-                <p class="text-center">Organiza tu día a día con pródito, tu asistente virtual que te ayuda a cumplir objetivos. ¡Haz que tu pródito  alcanzas tus metas!</p>
-            </div>
-      
-          <!-- Formulario LOGIN sin nada programado -->
-<div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
-  <form>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Correo electrónico</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-        placeholder="Enter email">
-      <small id="emailHelp" class="form-text text-muted">No compartiremos tu correo con nadie.</small>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Contraseña</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-<!--BOTON PARA INGRESAR SESION -->
-    <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>
+{% block title %}Página Bienvenida{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/bienvenida.css' %}">
+{% endblock %}
 
-<!-- BOTON CONEXION CON GOOGLE-->
 
-    <div class="text-center">
-      <a href="{% url 'google_login' %}">
-        <button type="button" class="btn btn-success btn-block boton-inicio-google">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google me-2" viewBox="0 0 16 16">
-            <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"></path>
-          </svg>
-          Iniciar sesión con Google
-        </button>
-      </a>
+{% block content %}
+<div class=" wrapper container-fluid mt-3 d-flex flex-column justify-content-center align-items-center ">
+  <div class=" row">
+    <div
+      class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center border-end text-center py-5">
+      <div class="d-flex align-items-center mb-3">
+        <img width="100rem"
+          src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png"
+          alt="Monito pródito" class="monito-img">
+        <img width="100rem"
+          src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png"
+          alt="Logo pródito" class="logo-img">
+      </div>
+      <h1 class="mb-3">¡Bienvenidos!</h1>
+      <p class="text-center">
+        Organiza tu día a día con Pródito, tu asistente virtual que te ayuda a cumplir objetivos.
+        ¡Haz que tu Pródito alcance tus metas!
+      </p>
     </div>
 
-<!--BOTON CREAR CUENTA!!-->
-    <div class="text-center mt-3">
-      <a href="#" class="btn btn-link">Crear una cuenta</a>
+
+    <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Correo electrónico</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Correo">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Contraseña</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>
+
+        <div class="text-center mt-3">
+          <a href="{% url 'google_login' %}">
+            <button type="button" class="btn btn-success btn-block boton-inicio-google">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-google me-2" viewBox="0 0 16 16">
+                <path
+                  d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z">
+                </path>
+              </svg>
+              Iniciar sesión con Google
+            </button>
+          </a>
+        </div>
+
+        <div class="text-center mt-3">
+          <a href="#" class="btn btn-link">Crear una cuenta</a>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
-
-          
-<!-- FOOTER -->
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top footer-custom">
-            <div class="col-md-4 d-flex align-items-center">
-                <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
-                    <svg class="bi" width="30" height="24" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
-                </a>
-                <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Prodito</span>
-            </div>
-      
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex footer-custom">
-                <li class="ms-3">
-                    <a class="text-body-secondary" href="#" aria-label="Instagram">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24" alt="Instagram">
-                    </a>
-                </li>
-                <li class="ms-3">
-                    <a class="text-body-secondary" href="#" aria-label="Facebook">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24" height="24" alt="Facebook">
-                    </a>
-                </li>
-            </ul>
-        </footer>
-    </div>
-</body>
-</html>
+{% endblock %}
