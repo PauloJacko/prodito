@@ -30,17 +30,3 @@
     margin-bottom: 5%;
   }
 }
-
-.footer-custom span,
-.footer-custom a {
-  color: #505255;
-  font-size: 14px;
-}
-
-.footer-custom ul {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
-  justify-content: flex-end;
-  align-items: center;
-}

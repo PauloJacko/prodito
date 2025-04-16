@@ -1,43 +1,49 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/crear_cuenta.css' %}">
-</head>
-<body>
+{% block title %}Crear cuenta{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/crear_cuenta.css' %}">
+{% endblock %}
 
-
-
-
-
-<!-- Footer -->
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-      <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap">
-          <svg class="bi" width="30" height="24" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
-        </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Prodito</span>
-      </div>
-  
-      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-        <li class="ms-3">
-            <a class="text-body-secondary" href="#" aria-label="Instagram">
-                <img src="{% static 'img/logo-instagram.png' %}" width="24" height="24" alt="Instagram">
-            </a>
-        </li>
-        <li class="ms-3">
-            <a class="text-body-secondary" href="#" aria-label="Facebook">
-                <img src="{% static 'img/logo-facebook.png' %}" width="24" height="24" alt="Facebook">
-            </a>
-        </li>
-    </ul>
-    </footer>
+{% block header %}
+<div class="header-wrapper d-flex align-items-center gap-2">
+  <img width="45rem" src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png"
+    alt="Monito pródito" class="monito-img">
+<div class= "contenedor-titulo">
+  <h5 class="crear-cuenta-titulo">Bienvenido a la creación de cuenta</h5>
   </div>
-</body>
-</html>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="form-container">
+  <h2 class="form-title">Crear cuenta</h2>
+  <form method="POST" action="{% url 'crear_cuenta' %}">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="username">Nombre de usuario</label>
+      <input type="text" id="username" name="username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password1">Contraseña</label>
+      <input type="password" id="password1" name="password1" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password2">Confirmar contraseña</label>
+      <input type="password" id="password2" name="password2" required>
+    </div>
+
+    <button type="submit" class="btn-crear-cuenta">Crear cuenta</button>
+  </form>
+</div>
+{% endblock %}
