@@ -1,0 +1,47 @@
+.home-layout {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+aside {
+  width: 20%;
+  height: 100%;
+  box-shadow: var(--shadow-small);
+}
+main {
+  padding: 2rem;
+  width: 80%;
+  height: 100%;
+}
+
+#calendar {
+  height: 800px;
+  background-color: var(--secondary) !important;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 1rem;
+  align-content: center;
+  margin-bottom: 1rem;
+
+  width: min-content;
+  padding: 1rem;
+  button {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--grey-primary);
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    color: var(--charcoal-primary);
+    box-shadow: var(--shadow-small);
+  }
+  button:hover {
+    color: var(--white-primary);
+  }
+}

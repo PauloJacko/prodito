@@ -3,7 +3,27 @@
 :root {
   --primary: hsla(198, 66%, 70%);
   --secondary: #1c343f;
+  --grey-primary: #e5e5e5;
   --border-primary: hsla(198, 66%, 50%);
+  --white-primary: #ffffff;
+  --black-primary: #000000;
+  --charcoal-primary: #333533;
+  --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -2px rgb(0 0 0 / 0.1);
+  --shadow-small: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary);
 }
 
 body {
@@ -43,9 +63,8 @@ body {
   padding-right: 3rem;
 }
 
-.main {
+.wrapper {
   grid-area: main;
-  padding: 2rem;
 }
 
 .footer {

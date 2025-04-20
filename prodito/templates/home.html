@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Página Bienvenida{% endblock %}
-
 {% block extra_css %}
+
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="{% static 'js/home.js' %}"></script>
 {% endblock %}
 
 {% block header %}
@@ -18,7 +21,27 @@
 {% endblock %}
 
 {% block content %}
-<div>
-  <h1>CREAR PAGINA CON CALENDARIO DE GOOGLE, SECCIÓN DE TAREAS, SISTEMA DE RECOMPENSA, ETC.. ETC...</h1>
+<div class="home-layout">
+  <aside>
+
+
+  </aside>
+  <main>
+    <div class="calendar-controls">
+      <button id="prevBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-chevron-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+        </svg></button>
+      <button id="todayBtn">Hoy</button>
+      <button id="nextBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-chevron-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+        </svg></button>
+    </div>
+    <div id="calendar" style="height: 800px"></div>
+  </main>
 </div>
+
 {% endblock %}
