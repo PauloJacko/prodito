@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "tareas.apps.TareasConfig",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "prodito.wsgi.application"
 
+# Redirects for authentication
+LOGIN_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

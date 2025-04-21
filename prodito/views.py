@@ -5,6 +5,8 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
+from tareas.models import Task
+from datetime import date
 
 
 def bienvenida(request):
@@ -12,7 +14,10 @@ def bienvenida(request):
 
 
 def home(request):
-    return render(request, "home.html")
+    tareas_hoy = []
+    if request.user.is_authenticated:
+        tareas_hoy = Task.objects.filter(usuario=request.user, fecha=date.today()).order_by('hora')
+    return render(request, "home.html", {'tareas_hoy': tareas_hoy})
 
 
 def crear_cuenta(request):
