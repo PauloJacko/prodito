@@ -10,14 +10,12 @@ aside {
   box-shadow: var(--shadow-small);
 }
 main {
-  padding: 2rem;
   width: 80%;
   height: 100%;
 }
 
 #calendar {
   height: 800px;
-  background-color: var(--secondary) !important;
 }
 
 .calendar-controls {
@@ -25,9 +23,9 @@ main {
   gap: 1rem;
   align-content: center;
   margin-bottom: 1rem;
-
   width: min-content;
   padding: 1rem;
+
   button {
     all: unset;
     cursor: pointer;
@@ -40,6 +38,7 @@ main {
     border-radius: 50%;
     color: var(--charcoal-primary);
     box-shadow: var(--shadow-small);
+    border: var(--border-primary);
   }
   button:hover {
     color: var(--white-primary);

@@ -7,7 +7,14 @@
       calendars: [],
       useFormPopup: true,
       useDetailPopup: true,
-      taskView: true
+      taskView: true,
+      theme: {
+        common: {
+          backgroundColor: '--',
+          borderColor: '#1c343f',
+          color: '#ffffff'
+        }
+      }
     })
 
     document.getElementById('prevBtn').addEventListener('click', () => {
