@@ -45,3 +45,17 @@ main {
     color: var(--white-primary);
   }
 }
+
+.usuario-barra {
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+}
+
+.saludo-usuario {
+  margin-right: 10px;
+}
+
+.boton-recompensa {
+  margin-right: 10px; 
+}
