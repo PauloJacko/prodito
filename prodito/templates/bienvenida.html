@@ -28,14 +28,26 @@
 
 
     <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
-      <form>
+      
+      {% if messages %}
+      <div class="w-100 mb-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} text-center" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+      <form method="POST" action="{% url 'inicio_sesion' %}">
+        {% csrf_token %}
         <div class="form-group">
           <label for="exampleInputEmail1">Correo electrónico</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Correo">
+          <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Correo" required>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+          <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Contraseña" required>
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-3">Ingresar</button>
 
@@ -60,4 +72,5 @@
     </div>
   </div>
 </div>
+
 {% endblock %}

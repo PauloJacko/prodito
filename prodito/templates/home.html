@@ -12,12 +12,21 @@
 
 {% block header %}
 <div class="header-wrapper d-flex align-items-center gap-2">
-  <img width="45rem" src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png"
+  <img width="45rem" src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407778/prodito_risa_hijnjl_ucgvci.png"
     alt="Monito pródito" class="monito-img">
 
-  {% if request.user.is_authenticated %}
-  <span class="fw-bold">Hola, {{ request.user.first_name }}!</span>
-  {% endif %}
+    {% if request.user.is_authenticated %}
+  <div class="d-flex align-items-center gap-3">
+    <span class="fw-bold">Hola, {{ request.user.username|capfirst }}!</span>
+
+    <a href="#" class="btn btn-success btn-sm">Ver recompensas</a>
+
+    <form method="POST" action="{% url 'cerrar_sesion' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
+    </form>
+  </div>
+{% endif %}
 </div>
 {% endblock %}
 
