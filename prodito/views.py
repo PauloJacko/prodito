@@ -8,6 +8,10 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 
 
+def admin(request):
+    return render(request, "admin.html")
+
+
 def bienvenida(request):
     return render(request, "bienvenida.html")
 
