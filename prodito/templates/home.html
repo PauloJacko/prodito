@@ -22,7 +22,13 @@
 
     <a href="#" class="btn btn-success btn-sm boton-recompensa">Ver recompensas</a>
 
-    <a href="{% url 'cerrar_sesion' %}" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+    <form method="POST" action="{% url 'cerrar_sesion' %}" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
+    </form>
+    {% if request.user.is_staff %}
+    <a href="/admin/" class="btn btn-warning btn-sm">ADMIN</a>
+  {% endif %}
     {% endif %}
   </div>
   {% endblock %}

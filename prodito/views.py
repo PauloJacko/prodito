@@ -1,6 +1,5 @@
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode
-
 import requests
 from django.conf import settings
 from django.contrib import messages
@@ -9,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-
 from tareas.models import Task
 
 
