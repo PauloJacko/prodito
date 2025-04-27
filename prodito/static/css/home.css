@@ -48,7 +48,7 @@ main {
 .usuario-barra {
   display: flex;
   align-items: center;
-  gap: 15px; 
+  gap: 15px;
 }
 
 .saludo-usuario {
@@ -56,5 +56,29 @@ main {
 }
 
 .boton-recompensa {
-  margin-right: 10px; 
+  margin-right: 10px;
+}
+
+.modal {
+  height: 40rem;
+  width: 40rem;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background: white;
+  border: none;
+  border-radius: 10px;
+  height: 100%;
+}
+
+menu {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }

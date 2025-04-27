@@ -6,8 +6,10 @@
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-<script type="text/javascript" src="tui-date-picker.js"></script>
-<script type="module" src="{% static 'js/home.js' %}"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script type="module" defer src="{% static 'js/home.js' %}"></script>
 
 {% endblock %}
 
@@ -28,13 +30,32 @@
     </form>
     {% if request.user.is_staff %}
     <a href="/admin/" class="btn btn-warning btn-sm">ADMIN</a>
-  {% endif %}
+    {% endif %}
     {% endif %}
   </div>
   {% endblock %}
 
   {% block content %}
   <div class="home-layout">
+    <dialog id="modalCrearTarea" class="modal">
+      <form method="dialog" id="formCrearTarea" class="modal-content form-group">
+        <h2>Crear Nueva Tarea</h2>
+
+        <label for="tituloInput">Título:</label><br>
+        <input type="text" id="tituloInput" class="form-control" required><br><br>
+
+        <label for="fechaInput">Fecha y Hora:</label><br>
+        <input type="text" id="fechaInput" class="form-control" required><br><br>
+
+        <label for="descripcionInput">Descripción:</label><br>
+        <textarea id="descripcionInput" class="form-control" rows="3"></textarea><br><br>
+
+        <menu>
+          <button value="cancel" class="btn btn-outline-danger" type="button" id="btnCancelar">Cancelar</button>
+          <button value="confirm" class="btn btn-primary" type="submit">Guardar</button>
+        </menu>
+      </form>
+    </dialog>
 
     <aside>
       <div class="sidebar-content">
@@ -80,5 +101,7 @@
       <div id="calendar" style="height: 800px"></div>
     </main>
   </div>
+
+
 
   {% endblock %}

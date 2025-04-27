@@ -1,5 +1,7 @@
+import json
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode
+
 import requests
 from django.conf import settings
 from django.contrib import messages
@@ -8,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+
 from tareas.models import Task
 
 
@@ -79,14 +83,26 @@ def inicio_sesion(request):
             return redirect("bienvenida")
 
 
+SCOPES = [
+    "https://www.googleapis.com/auth/calendar.events",
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/calendar.app.created",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "openid",
+    "email",
+    "profile",
+]
+
+
 def google_login(request):
     params = {
         "client_id": settings.GOOGLE_CLIENT_ID,
         "redirect_uri": settings.GOOGLE_REDIRECT_URI,
         "response_type": "code",
-        "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "consent",
+        "scope": " ".join(SCOPES),
     }
     url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
     return redirect(url)
@@ -95,7 +111,6 @@ def google_login(request):
 def oauth2callback(request):
     code = request.GET.get("code")
 
-    # Solicita el token de acceso y el refresh token
     token_res = requests.post(
         "https://oauth2.googleapis.com/token",
         data={
@@ -147,9 +162,6 @@ def obtener_tareas(request):
             data.append(evento)
 
     return JsonResponse(data, safe=False)
-
-
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
 def refrescar_token(refresh_token):
@@ -223,3 +235,116 @@ def eventos_google_calendar(request):
         )
 
     return JsonResponse(data, safe=False)
+
+
+def crear_evento_google_calendar(request, tarea):
+    access_token = request.session.get("google_access_token")
+    refresh_token = request.session.get("google_refresh_token")
+
+    if not access_token and refresh_token:
+        access_token = refrescar_token(refresh_token)
+        request.session["google_access_token"] = access_token
+
+    if not access_token:
+        print("No autorizado para crear evento en Google Calendar")
+        return
+
+    url = "https://www.googleapis.com/calendar/v3/calendars/primary/events"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json",
+    }
+
+    start_datetime = (
+        datetime.combine(tarea.fecha, tarea.hora)
+        if tarea.hora
+        else datetime.combine(tarea.fecha, datetime.min.time())
+    )
+    end_datetime = start_datetime + timedelta(hours=1)
+
+    event_data = {
+        "summary": tarea.titulo,
+        "description": tarea.descripcion,
+        "start": {
+            "dateTime": start_datetime.isoformat(),
+            "timeZone": "America/Santiago",
+        },
+        "end": {
+            "dateTime": end_datetime.isoformat(),
+            "timeZone": "America/Santiago",
+        },
+    }
+
+    response = requests.post(url, headers=headers, json=event_data)
+
+    if response.status_code == 200:
+        event = response.json()
+        tarea.evento_id = event["id"]
+        tarea.save(update_fields=["evento_id"])
+        print("Evento creado en Google Calendar")
+    else:
+        print(f"Error al crear evento: {response.text}")
+
+
+def eliminar_evento_google_calendar(request, evento_id):
+    access_token = request.session.get("google_access_token")
+    refresh_token = request.session.get("google_refresh_token")
+
+    if not access_token and refresh_token:
+        access_token = refrescar_token(refresh_token)
+        request.session["google_access_token"] = access_token
+
+    if not access_token:
+        print("No autorizado para eliminar evento en Google Calendar")
+        return
+
+    url = f"https://www.googleapis.com/calendar/v3/calendars/primary/events/{evento_id}"
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    response = requests.delete(url, headers=headers)
+
+    if response.status_code == 204:
+        print("Evento eliminado de Google Calendar")
+    else:
+        print(f"Error al eliminar evento: {response.text}")
+
+
+@csrf_exempt
+def crear_tarea_api(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            titulo = data.get("titulo")
+            fecha = data.get("fecha")
+            descripcion = data.get("descripcion")
+
+            if not titulo or not fecha:
+                return JsonResponse({"error": "Faltan datos requeridos"}, status=400)
+
+            try:
+                fecha_obj = datetime.strptime(fecha, "%Y-%m-%d").date()
+            except ValueError:
+                return JsonResponse(
+                    {"error": "Formato de fecha inválido. Debe ser 'YYYY-MM-DD'"},
+                    status=400,
+                )
+
+            tarea = Task.objects.create(
+                titulo=titulo,
+                fecha=fecha_obj,
+                descripcion=descripcion,
+                usuario=request.user,
+            )
+
+            crear_evento_google_calendar(request, tarea)
+
+            return JsonResponse(
+                {"message": "Tarea creada con éxito", "tarea_id": tarea.id}, status=201
+            )
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Datos JSON inválidos"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
