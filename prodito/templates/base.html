@@ -3,55 +3,91 @@
 <html lang="es">
 
 <head>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Pródito{% endblock %}</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Pródito{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block extra_head %}{% endblock %}
-    {% block extra_css %}{% endblock %}
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Fuentes personalizadas -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
+  {% block extra_css %}{% endblock %}
 </head>
 
 <body>
-    <div class="grid-layout">
-        <header class="header">
-            {% block header %}{% endblock %}
-        </header>
+  <div class="grid-layout">
+    <!-- HEADER -->
+    <header class="header">
+      <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #38BDF8; padding: 1rem 2rem;">
+          <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1744407777/prodito_feliz_suyaob_q8lyey.png" width="40" alt="Logo Pródito" class="mr-2">
+            <strong style="font-family: 'Poppins', sans-serif; font-size: 2rem;">pródito</strong>
+          </a>
+      
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav align-items-center gap-3">
+              <li class="nav-item"><a class="nav-link text-white" href="{% url 'tareas' %}">Mis Tareas</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="{% url 'metas' %}">Mis Metas</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="#">Mis Recompensas</a></li>
+      
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                  {{ request.user.first_name }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="#">Mi Perfil</a>
+                  <a class="dropdown-item" href="{% url 'etiquetas' %}">Etiquetas</a>
+                  <div class="dropdown-divider"></div>
+                  <form method="POST" action="{% url 'cerrar_sesion' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
+                </form>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
 
-        <div class="wrapper">
-            {% block content %}{% endblock %}
-        </div>
+    <!-- CONTENIDO -->
+    <main class="wrapper py-4 px-4">
+      {% block content %}{% endblock %}
+    </main>
 
-        <footer class="footer">
-            {% block footer %}
+    <!-- FOOTER -->
+    <footer class="footer bg-dark text-light py-3">
+      {% block footer %}
+      <div class="footer-container d-flex justify-content-between align-items-center px-5">
+        <span>© 2025 Pródito</span>
+        <ul class="nav list-unstyled d-flex mb-0 gap-3">
+          <li>
+            <a href="https://www.instagram.com/p/COLHA9-pvfd/" target="_blank">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24" height="24"
+                alt="Instagram">
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" width="24"
+                height="24" alt="Facebook">
+            </a>
+          </li>
+        </ul>
+      </div>
+      {% endblock %}
+    </footer>
+  </div>
 
-            <div class="footer-container">
-
-                <span class=" mb-md-0 text-body-secondary">© 2025 Pródito</span>
-
-                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                    <li class="ms-3">
-                        <a class="text-body-secondary" href="https://www.instagram.com/p/COLHA9-pvfd/" target="blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="24"
-                                height="24" alt="Instagram">
-                        </a>
-                    </li>
-                    <li class="ms-3">
-                        <a class="text-body-secondary" href="#">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-                                width="24" height="24" alt="Facebook">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            {% endblock %}
-        </footer>
-    </div>
+  <!-- Scripts Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

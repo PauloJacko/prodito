@@ -1,32 +1,268 @@
-.content {
-  height: 100%;
+/* Variables de color */
+:root {
+  --azul-cielo: #38BDF8;
+  --azul-oscuro: #1E293B;
+  --verde-menta: #5EEAD4;
+  --amarillo-dorado: #FACC15;
+  --celeste-claro: #F8FAFC;
+  --blanco: #FFFFFF;
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fuentes generales */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--celeste-claro);
+  min-height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-.monito-img {
-  width: 80px;
-  height: auto;
-  margin-right: 10px;
+/* Contenedor general */
+.bienvenida-container {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  height: 90vh;
+  background-color: var(--blanco);
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
-.logo-img {
-  width: 150px;
-  height: auto;
+/* Sección de información */
+.bienvenida-info {
+  flex: 2;
+  background-color: var(--azul-cielo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--blanco);
+  flex-direction: column;
+  text-align: center;
 }
 
-.border-end {
-  border-right: 1px solid #d5d7d9;
+.info-content {
+  max-width: 80%;
 }
 
-.boton-inicio-google {
-  margin-top: 3%;
+.mascota-img {
+  width: 200px;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 767.98px) {
-  .border-end {
-    border-right: none;
-    border-bottom: 1px solid #dee2e6;
-    margin-bottom: 5%;
+.info-top {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar imagen + título */
+  gap: 1.5rem;
+}
+
+.titulo-principal {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--blanco);
+  margin: 0;
+}
+
+.bienvenida-info h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.bienvenida-info p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+.benefit-card {
+  background-color: var(--blanco);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: var(--shadow-small);
+  transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-icon {
+  font-size: 2rem;
+  color: var(--azul-cielo);
+  margin-bottom: 1rem;
+}
+
+.benefit-card h5 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.benefit-card p {
+  font-family: 'Roboto', sans-serif;
+  color: var(--azul-oscuro);
+  font-size: 0.95rem;
+}
+
+/* Sección de login */
+.bienvenida-login {
+  flex: 1;
+  background-color: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Formularios */
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  color: var(--azul-oscuro);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--azul-oscuro);
+  font-weight: 600;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--azul-cielo);
+  border-radius: 10px;
+  background-color: var(--celeste-claro);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background-color: var(--azul-cielo);
+  border: none;
+  color: var(--blanco);
+  font-family: 'Poppins', sans-serif;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: var(--verde-menta);
+  color: var(--azul-oscuro);
+}
+
+/* Separador */
+.separador {
+  text-align: center;
+  margin: 1.5rem 0;
+  font-weight: 600;
+  color: var(--azul-oscuro);
+}
+
+/* Botón de Google */
+.btn-google {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.8rem;
+  background-color: #5EEAD4;
+  color: var(--azul-oscuro);
+  font-family: 'Poppins', sans-serif;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-google:hover {
+  background-color: #50c6b4;
+}
+
+/* Enlace de registro */
+.registrarse {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.registrarse a {
+  color: var(--azul-oscuro);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Mensajes de alerta */
+.alert {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bienvenida-container {
+      flex-direction: column;
+      height: auto;
+  }
+
+  .bienvenida-info,
+  .bienvenida-login {
+      width: 100%;
+      padding: 2rem;
+  }
+
+  .info-content {
+      max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
   }
 }

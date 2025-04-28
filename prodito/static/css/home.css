@@ -1,60 +1,164 @@
+/* Estructura principal */
 .home-layout {
   display: flex;
-  height: 100%;
+  flex-direction: column;
+  gap: 2rem;
   width: 100%;
+  padding: 2rem 3rem;
 }
 
-aside {
-  width: 20%;
-  height: 100%;
+/* Bienvenida */
+.bienvenida-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 8rem;
+}
+
+.bienvenida-usuario {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.saludo-home h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+  color: var(--azul-oscuro);
+}
+
+.saludo-home p {
+  font-family: 'Roboto', sans-serif;
+  color: var(--azul-oscuro);
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.monito-img {
+  width: auto;
+  height: 140px;
+  max-height: 160px;
+  border: none;
+  border-radius: 0;
+}
+
+.boton-nueva-tarea {
+  display: flex;
+  align-items: center;
+  margin-right: 8rem;
+}
+
+/* Botón Nueva Tarea */
+.nueva-tarea-btn {
+  background-color: var(--amarillo-dorado);
+  color: var(--azul-oscuro);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.1rem;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
   box-shadow: var(--shadow-small);
-}
-main {
-  width: 80%;
-  height: 100%;
+  transition: background-color 0.3s ease;
 }
 
-#calendar {
-  height: 800px;
+.nueva-tarea-btn:hover {
+  background-color: var(--verde-menta);
+  color: var(--azul-oscuro);
+}
+
+/* Sección principal (Tareas, Metas, Calendario) */
+.content-sections {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Columna Izquierda */
+.left-column {
+  width: 35%;
+}
+
+/* Botón Ir a Mis Tareas / Metas */
+.ir-tareas-btn {
+  background-color: var(--verde-menta);
+  color: var(--azul-oscuro);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: var(--shadow-small);
+  transition: background-color 0.3s ease;
+  width: auto;
+  display: inline-block;
+}
+
+.ir-tareas-btn:hover {
+  background-color: var(--azul-cielo);
+  color: var(--blanco);
+}
+
+/* Tarjetas (Tareas y Metas) */
+.card {
+  background-color: var(--blanco);
+  border-radius: 10px;
+  box-shadow: var(--shadow-small);
+  padding: 1rem;
+}
+
+.card h5 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--azul-oscuro);
+}
+
+/* Calendario */
+.calendar-column {
+  width: 65%;
+}
+
+.calendar-card {
+  background-color: var(--blanco);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-small);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-calendario {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--azul-oscuro);
 }
 
 .calendar-controls {
   display: flex;
   gap: 1rem;
-  align-content: center;
-  margin-bottom: 1rem;
-  width: min-content;
-  padding: 1rem;
-
-  button {
-    all: unset;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--grey-primary);
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    color: var(--charcoal-primary);
-    box-shadow: var(--shadow-small);
-    border: var(--border-primary);
-  }
-  button:hover {
-    color: var(--white-primary);
-  }
+  justify-content: flex-end;
 }
 
-.usuario-barra {
-  display: flex;
-  align-items: center;
-  gap: 15px; 
+.calendar-controls button {
+  background-color: var(--verde-menta);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: var(--azul-oscuro);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.saludo-usuario {
-  margin-right: 10px;
+.calendar-controls button:hover {
+  background-color: var(--azul-cielo);
+  color: var(--blanco);
 }
 
-.boton-recompensa {
-  margin-right: 10px; 
+#calendar {
+  height: 800px;
 }

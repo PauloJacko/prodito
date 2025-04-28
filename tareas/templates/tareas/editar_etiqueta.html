@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Etiqueta{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Etiqueta: {{ etiqueta.nombre }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a href="{% url 'etiquetas' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,39 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Poppins:wght@800&display=swap');
 
 :root {
-  --primary: hsla(198, 66%, 70%);
-  --secondary: #1c343f;
-  --grey-primary: #e5e5e5;
-  --border-primary: hsla(198, 66%, 50%);
-  --white-primary: #ffffff;
-  --black-primary: #000000;
-  --charcoal-primary: #333533;
-  --shadow-large: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -2px rgb(0 0 0 / 0.1);
-  --shadow-small: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1),
-    0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-::-webkit-scrollbar {
-  width: 10px;
-}
+  --azul-cielo: #38BDF8;
+  --verde-menta: #5EEAD4;
+  --amarillo-dorado: #FACC15;
+  --azul-oscuro: #1E293B;
+  --celeste-claro: #F8FAFC;
+  --blanco: #FFFFFF;
+  --rojo-claro: #F87171;
+  --verde-claro: #4ADE80;
 
-::-webkit-scrollbar-thumb {
-  background: var(--border-primary);
-}
-
-::-webkit-scrollbar-track {
-  background: var(--secondary);
+  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 body {
   font-family: 'Roboto', sans-serif;
-  font-optical-sizing: auto;
-  box-sizing: border-box !important;
-  background-color: var(--primary);
-  box-sizing: border-box;
+  background-color: #F8FAFC;
+  color: var(--azul-oscuro);
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  grid-area: header;
+  background-color: var(--azul-cielo);
+  color: var(--blanco);
+  padding: 0;
+}
+
+.header-wrapper {
+  height: 6rem;
+  background-color: var(--azul-oscuro);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
 }
 
 .grid-layout {
@@ -46,47 +50,91 @@ body {
   min-height: 100vh;
 }
 
-.header {
-  grid-area: header;
-  color: white;
-  text-align: center;
-}
-
-.header-wrapper {
-  height: 5rem;
-  background-color: var(--secondary) !important;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
-
 .wrapper {
   grid-area: main;
+  padding: 2rem;
 }
 
 .footer {
   grid-area: footer;
-  color: white;
-  text-align: center;
-  height: 7rem;
-  display: flex;
-  align-items: center;
-  border-top: 0.1rem solid var(--border-primary);
-  background-color: var(--secondary);
-  .footer-container {
-    padding-left: 7rem;
-    padding-right: 7rem;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-  }
+  background-color: var(--azul-cielo);
+  color: var(--azul-oscuro);
+  border-top: 1px solid var(--azul-oscuro);
+}
 
-  ul {
-    display: flex;
-    gap: 0.7rem;
-  }
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+}
+
+ul.nav {
+  display: flex;
+  gap: 1rem;
+}
+
+ul.nav li a img {
+  transition: transform 0.2s ease;
+}
+
+ul.nav li a img:hover {
+  transform: scale(1.1);
+}
+
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--azul-oscuro);
+}
+
+button {
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar-brand img {
+  margin-right: 15px;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  padding: 0.5rem 1rem;
+  border: 2px solid transparent;
+  color: var(--azul-oscuro) !important;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco) !important;
+  border-color: var(--azul-oscuro);
+  padding: 0.3rem 0.7rem;
+}
+
+.navbar-nav .nav-link.dropdown-toggle {
+  background-color: var(--verde-menta);
+  color: var(--azul-oscuro) !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .nav-link.dropdown-toggle:hover {
+  background-color: var(--celeste-claro);
+  color: var(--azul-oscuro) !important;
+}
+
+.dropdown-menu {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  background-color: var(--blanco);
+  border: 1px solid var(--azul-cielo);
+}
+
+.dropdown-menu a.dropdown-item:hover {
+  background-color: var(--azul-cielo);
+  color: var(--azul-oscuro);
+  padding: 0.5rem 1rem;
 }

@@ -27,6 +27,9 @@
       <label>Etiquetas</label>
       {{ form.etiquetas }}
     </div>
+    <div class="mb-3">
+      <a href="{% url 'crear_etiqueta' %}" class="btn btn-outline-info btn-sm">+ Crear Etiqueta</a>
+  </div>
     <button type="submit" class="btn btn-success mt-3">Crear Tarea</button>
     <a href="{% url 'tareas' %}" class="btn btn-secondary mt-3">Cancelar</a>
   </form>

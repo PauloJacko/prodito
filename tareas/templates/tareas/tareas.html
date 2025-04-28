@@ -18,6 +18,9 @@
                         {% if tarea.descripcion %}
                             <p class="mb-0">{{ tarea.descripcion }}</p>
                         {% endif %}
+                        {% if tarea.meta %}
+                            <p class="text-muted mb-0"><small>Meta asociada: {{ tarea.meta.titulo }}</small></p>
+                        {% endif %}
                         {% if tarea.etiquetas.all %}
                             <p class="mb-0">
                                 {% for etiqueta in tarea.etiquetas.all %}
