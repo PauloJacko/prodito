@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Mis Etiquetas</h2>
+    <h2 class="oscuro">Mis Etiquetas</h2>
     <a href="{% url 'crear_etiqueta' %}" class="btn btn-primary mb-3">Nueva Etiqueta</a>
     <ul class="list-group">
         {% for etiqueta in etiquetas %}

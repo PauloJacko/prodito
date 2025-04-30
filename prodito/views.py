@@ -1,8 +1,9 @@
 import json
+import requests
+import tempfile
+import os
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode
-
-import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -11,8 +12,16 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model, logout
+from django.views.decorators.http import require_POST
+from django.utils.timezone import now
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.pdfgen import canvas
 from tareas.models import Task
+from django.views.decorators.http import require_POST
+
 
 
 def admin(request):
@@ -21,6 +30,9 @@ def admin(request):
 
 def bienvenida(request):
     return render(request, "bienvenida.html")
+
+def mi_perfil(request):
+    return render(request, "mi_perfil.html" )
 
 
 def home(request):
@@ -348,3 +360,86 @@ def crear_tarea_api(request):
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
+
+@login_required
+def generar_reporte(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+    
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    logo_url = "https://res.cloudinary.com/dtnttrleq/image/upload/v1744407776/prodito_logo_gqeq7n_qhpgv9.png"
+    logo_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+    logo_file.write(requests.get(logo_url).content)
+    logo_file.close()
+    p.drawImage(logo_file.name, 50, height - 100, width=120, height=40, preserveAspectRatio=True, mask='auto')
+
+    # Título
+    p.setFont("Helvetica-Bold", 20)
+    p.drawCentredString(width / 2, height - 130, "Reporte de Usuario")
+    p.line(50, height - 140, width - 50, height - 140)
+
+    # Info de usuario
+    p.setFont("Helvetica", 12)
+    p.drawString(50, height - 170, f"Usuario: {request.user.username}")
+    p.drawString(50, height - 190, f"Email: {request.user.email}")
+    p.drawString(50, height - 210, f"Fecha de generación: {now().strftime('%d-%m-%Y %H:%M')}")
+
+    # Tareas
+    tareas = request.user.task_set.all()
+    completadas = tareas.filter(completada=True).count()
+    total = tareas.count()
+    progreso = (completadas / total * 100) if total > 0 else 0
+    p.drawString(50, height - 240, f"Tareas completadas: {completadas} de {total} ({progreso:.0f}%)")
+
+    # Cargar íconos locales
+    check_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'check-png.png')
+    cross_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'cross-png.png')
+
+    # Lista de tareas
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(50, height - 270, "Últimas tareas:")
+    y = height - 290
+    p.setFont("Helvetica", 11)
+
+    for tarea in tareas.order_by('-id')[:10]:
+        estado_texto = "Completada:" if tarea.completada else "Pendiente:"
+        estado_img = check_path if tarea.completada else cross_path
+
+        try:
+            p.drawImage(estado_img, 50, y - 3, width=12, height=12, mask='auto')
+        except Exception as e:
+            print(f"Error cargando imagen de estado: {e}")
+
+        p.drawString(70, y, f"{estado_texto} {tarea.titulo}")
+        y -= 18
+
+        if y < 100:
+            p.showPage()
+            y = height - 50
+
+    mascota_url = "https://res.cloudinary.com/dtnttrleq/image/upload/v1744407778/prodito_risa_hijnjl_ucgvci.png"
+    mascota_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+    mascota_file.write(requests.get(mascota_url).content)
+    mascota_file.close()
+    p.drawImage(mascota_file.name, width - 180, 40, width=120, height=100, preserveAspectRatio=True, mask='auto')
+
+    p.showPage()
+    p.save()
+
+    # Limpiar archivos temporales
+    os.unlink(logo_file.name)
+    os.unlink(mascota_file.name)
+
+    return response
+
+@require_POST
+@login_required
+def eliminar_cuenta(request):
+    messages.add_message(request, messages.WARNING, '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.')
+    usuario = request.user
+    logout(request)  
+    usuario.delete()
+    return redirect('bienvenida') 
+

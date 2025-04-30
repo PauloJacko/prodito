@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'css/mi_perfil.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="mi-perfil-container">
+  <h2 class="titulo-perfil oscuro">Mi Perfil</h2>
+
+  <div class="info-usuario">
+    <p class="oscuro"><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+    <p class="oscuro"><strong>Correo electrónico:</strong> {{ user.email }}</p>
+  </div>
+
+  <!-- Resumen de actividad -->
+  <div class="actividad-container">
+    <div class="card">
+      <h5 class="card-title">Tareas Completadas Hoy</h5>
+      <p class="card-text">{{ tareas_completadas_hoy }}</p>
+    </div>
+    <div class="card">
+      <h5 class="card-title">Metas Activas</h5>
+      <p class="card-text">{{ metas_activas }}</p>
+    </div>
+  </div>
+  
+  <!-- Reporte en PDF -->
+  <div class="action-container">
+    <form method="GET" action="{% url 'generar_reporte' %}">
+        <button type="submit" class="btn-action">Descargar Reporte en PDF</button>
+    </form>
+  </div>
+
+  <!-- Cambiar contraseña -->
+  <div class="action-container">
+    <a href="{% url 'password_change' %}" class="btn-action">Cambiar Contraseña</a>
+  </div>
+
+  <!-- Eliminar cuenta -->
+  <div class="action-container">
+    <form method="POST" action="{% url 'eliminar_cuenta' %}" onsubmit="return confirm('Esta acción eliminará permanentemente tu cuenta. ¿Estás seguro?');">
+      {% csrf_token %}
+      <button type="submit" class="btn-action btn-danger">Eliminar Cuenta</button>
+    </form>
+  </div>
+
+  <!-- Selector de tema claro/oscuro -->
+<div class="action-container">
+  <p class="oscuro mb-2">Selecciona un tema claro/oscuro:</p>
+  <label class="theme-switch" for="toggle-tema">
+    <input type="checkbox" id="toggle-tema">
+    <span class="slider"></span>
+  </label>
+</div>
+
+  <!-- Preferencias-->
+  <div class="preferencias-container">
+    <h5 class="oscuro">Próximamente: Preferencias de Usuario</h5>
+    <p class="text-muted oscuro">Notificaciones y más.</p>
+  </div>
+
+</div>
+
+<script>
+  const toggle = document.getElementById('toggle-tema');
+  const body = document.body;
+
+  if (localStorage.getItem('tema') === 'oscuro') {
+    body.classList.add('tema-oscuro');
+    toggle.checked = true;
+  }
+
+  toggle.addEventListener('change', function () {
+    if (this.checked) {
+      body.classList.add('tema-oscuro');
+      localStorage.setItem('tema', 'oscuro');
+    } else {
+      body.classList.remove('tema-oscuro');
+      localStorage.setItem('tema', 'claro');
+    }
+  });
+</script>
+
+{% endblock %}
