@@ -206,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return res.json()
       })
       .then((eventos) => {
-        console.log({ eventos })
         cal.createEvents(eventos)
       })
       .catch((err) => {

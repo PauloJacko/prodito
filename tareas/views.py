@@ -43,6 +43,9 @@ def crear_tarea(request):
             if tarea.fecha_fin and not tarea.hora_fin and tarea.hora:
                 tarea.hora_fin = tarea.hora
 
+            if not tarea.fecha_fin and tarea.hora_fin:
+                tarea.fecha_fin = tarea.fecha
+
             tarea.save()
             form.save_m2m()
 
@@ -61,7 +64,18 @@ def editar_tarea(request, tarea_id):
     if request.method == "POST":
         form = TaskForm(request.POST, instance=tarea)
         if form.is_valid():
-            tarea = form.save()
+            tarea = form.save(commit=False)
+
+            # Si se entrega fecha_fin sin hora_fin pero sí hay hora → usar hora como hora_fin
+            if tarea.fecha_fin and not tarea.hora_fin and tarea.hora:
+                tarea.hora_fin = tarea.hora
+
+            # Si no se entrega fecha_fin pero sí hora_fin → usar misma fecha
+            if not tarea.fecha_fin and tarea.hora_fin:
+                tarea.fecha_fin = tarea.fecha
+
+            tarea.save()
+            form.save_m2m()
 
             if tarea.fecha and tarea.hora:
                 start_datetime = datetime.datetime.combine(tarea.fecha, tarea.hora)
@@ -86,7 +100,6 @@ def editar_tarea(request, tarea_id):
                             "Content-Type": "application/json",
                         }
 
-                        # Formatear las fechas y horas para Google Calendar
                         event_data = {
                             "summary": tarea.titulo,
                             "description": tarea.descripcion,

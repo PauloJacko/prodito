@@ -154,9 +154,13 @@ def oauth2callback(request):
 
 
 def obtener_tareas(request):
-    tareas = Task.objects.filter(usuario=request.user)
     data = []
+    is_google_user = request.session["google_access_token"] is not None
 
+    if is_google_user:
+        return JsonResponse(data, safe=False)
+
+    tareas = Task.objects.filter(usuario=request.user)
     for tarea in tareas:
         evento = {
             "id": str(tarea.id),
