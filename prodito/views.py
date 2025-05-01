@@ -1,27 +1,24 @@
 import json
-import requests
-import tempfile
 import os
+import tempfile
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode
+
+import requests
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-from django.contrib.auth import get_user_model, logout
-from django.views.decorators.http import require_POST
 from django.utils.timezone import now
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm
-from reportlab.pdfgen import canvas
-from tareas.models import Task
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
+from tareas.models import Task
 
 
 def admin(request):
@@ -31,8 +28,9 @@ def admin(request):
 def bienvenida(request):
     return render(request, "bienvenida.html")
 
+
 def mi_perfil(request):
-    return render(request, "mi_perfil.html" )
+    return render(request, "mi_perfil.html")
 
 
 def home(request):
@@ -160,18 +158,17 @@ def obtener_tareas(request):
     data = []
 
     for tarea in tareas:
-        if tarea.fecha:
-            evento = {
-                "id": str(tarea.id),
-                "calendarId": "1",
-                "title": tarea.titulo,
-                "category": "time",
-                "dueDateClass": "",
-                "start": f"{tarea.fecha}T{tarea.hora or '00:00:00'}",
-                "end": f"{tarea.fecha}T{tarea.hora or '00:00:00'}",
-                "isReadOnly": True,
-            }
-            data.append(evento)
+        evento = {
+            "id": str(tarea.id),
+            "calendarId": "1",
+            "title": tarea.titulo,
+            "category": "time",
+            "dueDateClass": "",
+            "start": f"{tarea.fecha}T{tarea.hora or '00:00:00'}",
+            "end": f"{tarea.fecha_fin}T{tarea.hora_fin or '00:00:00'}",
+            "isReadOnly": True,
+        }
+        data.append(evento)
 
     return JsonResponse(data, safe=False)
 
@@ -190,7 +187,7 @@ def refrescar_token(refresh_token):
 
 
 @login_required
-def eventos_google_calendar(request):
+def eventos_google_calendar(request, anio, mes):
     access_token = request.session.get("google_access_token")
     refresh_token = request.session.get("google_refresh_token")
 
@@ -201,52 +198,65 @@ def eventos_google_calendar(request):
     if not access_token:
         return JsonResponse({"error": "No autorizado"}, status=401)
 
-    calendar_id = "primary"
-    time_min = (datetime.now() - timedelta(days=60)).isoformat() + "Z"
-    time_max = (datetime.now() + timedelta(days=30)).isoformat() + "Z"
+    try:
+        inicio = datetime(anio, mes, 1)
+        if mes == 12:
+            fin_mes = datetime(anio + 1, 1, 1)
+        else:
+            fin_mes = datetime(anio, mes + 1, 1)
+    except Exception:
+        return JsonResponse({"error": "Parámetros año o mes inválidos"}, status=400)
 
-    url = f"https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events"
+    calendar_id = "primary"
     headers = {"Authorization": f"Bearer {access_token}"}
+    base_url = f"https://www.googleapis.com/calendar/v3/calendars/{calendar_id}/events"
+
     params = {
         "maxResults": 250,
         "orderBy": "startTime",
         "singleEvents": True,
-        "timeMin": time_min,
-        "timeMax": time_max,
+        "timeMin": inicio.isoformat() + "Z",
+        "timeMax": fin_mes.isoformat() + "Z",
     }
 
-    response = requests.get(url, headers=headers, params=params)
+    eventos = []
+    next_page_token = None
+    while True:
+        if next_page_token:
+            params["pageToken"] = next_page_token
 
-    if response.status_code == 403:
-        return JsonResponse(
-            {"error": "Acceso denegado. Verifica los permisos de OAuth."}, status=403
-        )
+        response = requests.get(base_url, headers=headers, params=params)
+        if response.status_code != 200:
+            return JsonResponse(
+                {"error": "Error obteniendo eventos"}, status=response.status_code
+            )
 
-    if response.status_code != 200:
-        return JsonResponse(
-            {"error": "No se pudieron obtener los eventos"}, status=response.status_code
-        )
+        data = response.json()
+        eventos.extend(data.get("items", []))
 
-    eventos = response.json().get("items", [])
-    data = []
+        next_page_token = data.get("nextPageToken")
+        if not next_page_token:
+            break
+
+    resultado = []
     for e in eventos:
         titulo = e.get("summary", "Sin título")
-        inicio = e["start"].get("dateTime") or e["start"].get("date")
-        fin = e["end"].get("dateTime") or e["end"].get("date")
+        inicio_evento = e["start"].get("dateTime") or e["start"].get("date")
+        fin_evento = e["end"].get("dateTime") or e["end"].get("date")
 
-        data.append(
+        resultado.append(
             {
                 "id": e["id"],
                 "calendarId": "google",
                 "title": titulo,
                 "category": "time",
-                "start": inicio,
-                "end": fin,
+                "start": inicio_evento,
+                "end": fin_evento,
                 "isReadOnly": True,
             }
         )
 
-    return JsonResponse(data, safe=False)
+    return JsonResponse(resultado, safe=False)
 
 
 def crear_evento_google_calendar(request, tarea):
@@ -267,12 +277,18 @@ def crear_evento_google_calendar(request, tarea):
         "Content-Type": "application/json",
     }
 
+    # Si la hora de fin no está especificada, le asignamos una hora por defecto (1 hora después del inicio)
     start_datetime = (
         datetime.combine(tarea.fecha, tarea.hora)
         if tarea.hora
         else datetime.combine(tarea.fecha, datetime.min.time())
     )
-    end_datetime = start_datetime + timedelta(hours=1)
+
+    if tarea.hora_fin:
+        end_datetime = datetime.combine(tarea.fecha_fin, tarea.hora_fin)
+    else:
+        # Si no se especifica hora_fin, asignamos 1 hora después de la hora de inicio
+        end_datetime = start_datetime + timedelta(hours=1)
 
     event_data = {
         "summary": tarea.titulo,
@@ -361,11 +377,12 @@ def crear_tarea_api(request):
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
 @login_required
 def generar_reporte(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
-    
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="reporte.pdf"'
+
     p = canvas.Canvas(response, pagesize=A4)
     width, height = A4
 
@@ -373,7 +390,15 @@ def generar_reporte(request):
     logo_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     logo_file.write(requests.get(logo_url).content)
     logo_file.close()
-    p.drawImage(logo_file.name, 50, height - 100, width=120, height=40, preserveAspectRatio=True, mask='auto')
+    p.drawImage(
+        logo_file.name,
+        50,
+        height - 100,
+        width=120,
+        height=40,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
 
     # Título
     p.setFont("Helvetica-Bold", 20)
@@ -384,18 +409,24 @@ def generar_reporte(request):
     p.setFont("Helvetica", 12)
     p.drawString(50, height - 170, f"Usuario: {request.user.username}")
     p.drawString(50, height - 190, f"Email: {request.user.email}")
-    p.drawString(50, height - 210, f"Fecha de generación: {now().strftime('%d-%m-%Y %H:%M')}")
+    p.drawString(
+        50, height - 210, f"Fecha de generación: {now().strftime('%d-%m-%Y %H:%M')}"
+    )
 
     # Tareas
     tareas = request.user.task_set.all()
     completadas = tareas.filter(completada=True).count()
     total = tareas.count()
     progreso = (completadas / total * 100) if total > 0 else 0
-    p.drawString(50, height - 240, f"Tareas completadas: {completadas} de {total} ({progreso:.0f}%)")
+    p.drawString(
+        50,
+        height - 240,
+        f"Tareas completadas: {completadas} de {total} ({progreso:.0f}%)",
+    )
 
     # Cargar íconos locales
-    check_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'check-png.png')
-    cross_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'cross-png.png')
+    check_path = os.path.join(settings.BASE_DIR, "static", "img", "check-png.png")
+    cross_path = os.path.join(settings.BASE_DIR, "static", "img", "cross-png.png")
 
     # Lista de tareas
     p.setFont("Helvetica-Bold", 14)
@@ -403,12 +434,12 @@ def generar_reporte(request):
     y = height - 290
     p.setFont("Helvetica", 11)
 
-    for tarea in tareas.order_by('-id')[:10]:
+    for tarea in tareas.order_by("-id")[:10]:
         estado_texto = "Completada:" if tarea.completada else "Pendiente:"
         estado_img = check_path if tarea.completada else cross_path
 
         try:
-            p.drawImage(estado_img, 50, y - 3, width=12, height=12, mask='auto')
+            p.drawImage(estado_img, 50, y - 3, width=12, height=12, mask="auto")
         except Exception as e:
             print(f"Error cargando imagen de estado: {e}")
 
@@ -423,7 +454,15 @@ def generar_reporte(request):
     mascota_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     mascota_file.write(requests.get(mascota_url).content)
     mascota_file.close()
-    p.drawImage(mascota_file.name, width - 180, 40, width=120, height=100, preserveAspectRatio=True, mask='auto')
+    p.drawImage(
+        mascota_file.name,
+        width - 180,
+        40,
+        width=120,
+        height=100,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
 
     p.showPage()
     p.save()
@@ -434,12 +473,16 @@ def generar_reporte(request):
 
     return response
 
+
 @require_POST
 @login_required
 def eliminar_cuenta(request):
-    messages.add_message(request, messages.WARNING, '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.')
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.",
+    )
     usuario = request.user
-    logout(request)  
+    logout(request)
     usuario.delete()
-    return redirect('bienvenida') 
-
+    return redirect("bienvenida")

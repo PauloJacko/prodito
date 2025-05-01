@@ -7,9 +7,69 @@
 
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <div class="form-group">
+      <label for="id_titulo">Título</label>
+      {{ form.titulo }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_descripcion">Descripción</label>
+      {{ form.descripcion }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_fecha">Fecha de Inicio</label>
+      <input type="text" class="form-control" id="id_fecha" name="fecha"
+        value="{{ form.fecha.value|default_if_none:'' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="id_hora">Hora de Inicio</label>
+      <input type="time" class="form-control" id="id_hora" name="hora" value="{{ form.hora.value }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="id_fecha_fin">Fecha de Fin</label>
+      <input type="text" class="form-control" id="id_fecha_fin" name="fecha_fin"
+        value="{{ form.fecha_fin.value|default_if_none:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="id_hora_fin">Hora de Fin</label>
+      <input type="time" class="form-control" id="id_hora_fin" name="hora_fin"
+        value="{{ form.hora_fin.value|default_if_none:'' }}">
+    </div>
+
+    <div class="form-group">
+      <label>Etiquetas</label>
+      {{ form.etiquetas }}
+    </div>
+
+    <div class="mb-3">
+      <a href="{% url 'crear_etiqueta' %}" class="btn btn-outline-info btn-sm">+ Crear Etiqueta</a>
+    </div>
+
     <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
     <a href="{% url 'tareas' %}" class="btn btn-secondary mt-3">Cancelar</a>
   </form>
 </div>
+
+{% block extra_js %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    flatpickr("#id_fecha", {
+      enableTime: false,
+      dateFormat: "Y-m-d", // Formato para la fecha
+    });
+    flatpickr("#id_fecha_fin", {
+      enableTime: false,
+      dateFormat: "Y-m-d", // Formato para la fecha
+    });
+  });
+</script>
+{% endblock %}
+
 {% endblock %}

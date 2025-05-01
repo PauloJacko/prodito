@@ -17,13 +17,14 @@
   <!-- Saludo -->
   <div class="bienvenida-home">
     <div class="bienvenida-usuario d-flex align-items-center gap-4">
-      <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota" class="monito-img">
+      <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota"
+        class="monito-img">
       <div class="saludo-home">
         <h2 class="saludo-usuario">¡Hola, {{ request.user.first_name|default:"Usuario" }}!</h2>
         <p>¿Qué haremos hoy?</p>
       </div>
     </div>
-    
+
     <div class="boton-nueva-tarea">
       <!-- Botón para abrir modal de nueva tarea -->
       <button id="btnAbrirModal" class="btn nueva-tarea-btn">Nueva Tarea</button>
@@ -38,8 +39,11 @@
       <label for="tituloInput">Título:</label><br>
       <input type="text" id="tituloInput" class="form-control" required><br><br>
 
-      <label for="fechaInput">Fecha y Hora:</label><br>
-      <input type="text" id="fechaInput" class="form-control" required><br><br>
+      <label>Fecha de inicio:</label>
+      <input type="text" id="fechaInicioInput" />
+
+      <label>Fecha de fin:</label>
+      <input type="text" id="fechaFinInput" />
 
       <label for="descripcionInput">Descripción:</label><br>
       <textarea id="descripcionInput" class="form-control" rows="3"></textarea><br><br>
@@ -56,30 +60,30 @@
 
     <!-- Columna Izquierda -->
     <div class="left-column">
-      
+
       <!-- Tareas -->
       <div class="card mb-4">
         <h5 class="fw-bold mb-3">Tareas de Hoy</h5>
         {% if tareas_hoy %}
-          <ul class="list-group list-group-flush">
-            {% for tarea in tareas_hoy %}
-              <li class="list-group-item">
-                <strong>{{ tarea.titulo }}</strong><br>
-                {% if tarea.hora %}
-                  <small>{{ tarea.hora }}</small><br>
-                {% endif %}
-                {% if tarea.etiquetas.all %}
-                  <div class="mt-1">
-                    {% for etiqueta in tarea.etiquetas.all %}
-                      <span class="badge" style="background-color: {{ etiqueta.color }}">{{ etiqueta.nombre }}</span>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </li>
-            {% endfor %}
-          </ul>
+        <ul class="list-group list-group-flush">
+          {% for tarea in tareas_hoy %}
+          <li class="list-group-item">
+            <strong>{{ tarea.titulo }}</strong><br>
+            {% if tarea.hora %}
+            <small>{{ tarea.hora }}</small><br>
+            {% endif %}
+            {% if tarea.etiquetas.all %}
+            <div class="mt-1">
+              {% for etiqueta in tarea.etiquetas.all %}
+              <span class="badge" style="background-color: {{ etiqueta.color }}">{{ etiqueta.nombre }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
         {% else %}
-          <p class="text-muted">No tienes tareas registradas hoy.</p>
+        <p class="text-muted">No tienes tareas registradas hoy.</p>
         {% endif %}
         <a href="{% url 'tareas' %}" class="btn ir-tareas-btn mt-3">Ir a Mis Tareas</a>
       </div>
@@ -88,16 +92,16 @@
       <div class="card">
         <h5 class="fw-bold mb-3">Metas Activas</h5>
         {% if metas_activas %}
-          <ul class="list-group list-group-flush">
-            {% for meta in metas_activas %}
-              <li class="list-group-item">
-                <strong>{{ meta.titulo }}</strong><br>
-                <small>Fecha límite: {{ meta.fecha_limite }}</small>
-              </li>
-            {% endfor %}
-          </ul>
+        <ul class="list-group list-group-flush">
+          {% for meta in metas_activas %}
+          <li class="list-group-item">
+            <strong>{{ meta.titulo }}</strong><br>
+            <small>Fecha límite: {{ meta.fecha_limite }}</small>
+          </li>
+          {% endfor %}
+        </ul>
         {% else %}
-          <p class="text-muted">No tienes metas activas.</p>
+        <p class="text-muted">No tienes metas activas.</p>
         {% endif %}
         <a href="{% url 'metas' %}" class="btn ir-tareas-btn mt-3">Ir a Mis Metas</a>
       </div>
@@ -108,10 +112,41 @@
     <div class="calendar-column">
       <div class="calendar-card">
         <h3 class="titulo-calendario">Mi calendario</h3>
-        <div class="calendar-controls mb-3">
-          <button id="prevBtn">◀</button>
-          <button id="todayBtn">Hoy</button>
-          <button id="nextBtn">▶</button>
+        <div class="calendar-controls mb-3 d-flex align-items-center flex-wrap">
+          <!-- Controles de navegación -->
+          <div class="d-flex align-items-center me-3">
+            <button id="prevBtn" class="btn btn-sm btn-outline-secondary">◀</button>
+            <button id="todayBtn" class="btn btn-sm btn-outline-primary mx-2">Hoy</button>
+            <button id="nextBtn" class="btn btn-sm btn-outline-secondary">▶</button>
+          </div>
+
+          <!-- Selector de mes y año -->
+          <div class="d-flex align-items-center me-auto">
+            <select id="monthSelector" class="form-select form-select-sm me-2" style="width: auto;">
+              <option value="0">Enero</option>
+              <option value="1">Febrero</option>
+              <option value="2">Marzo</option>
+              <option value="3">Abril</option>
+              <option value="4">Mayo</option>
+              <option value="5">Junio</option>
+              <option value="6">Julio</option>
+              <option value="7">Agosto</option>
+              <option value="8">Septiembre</option>
+              <option value="9">Octubre</option>
+              <option value="10">Noviembre</option>
+              <option value="11">Diciembre</option>
+            </select>
+
+            <select id="yearSelector" class="form-select form-select-sm">
+              <!-- Los años se llenarán con JavaScript -->
+            </select>
+          </div>
+
+          <!-- Switch para cambiar la vista -->
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="viewSwitch">
+            <label class="form-check-label" for="viewSwitch">Vista Mensual</label>
+          </div>
         </div>
         <div id="calendar"></div>
       </div>

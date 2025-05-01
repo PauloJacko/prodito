@@ -9,41 +9,52 @@
         <a href="{% url 'crear_tarea' %}" class="btn btn-primary">+ Nueva Tarea</a>
     </div>
     {% if tareas %}
-        <ul class="list-group">
-            {% for tarea in tareas %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>{{ tarea.titulo }}</strong><br>
-                        <small>{{ tarea.fecha }} {{ tarea.hora|default:"" }}</small>
-                        {% if tarea.descripcion %}
-                            <p class="mb-0">{{ tarea.descripcion }}</p>
-                        {% endif %}
-                        {% if tarea.meta %}
-                            <p class="text-muted mb-0"><small>Meta asociada: {{ tarea.meta.titulo }}</small></p>
-                        {% endif %}
-                        {% if tarea.etiquetas.all %}
-                            <p class="mb-0">
-                                {% for etiqueta in tarea.etiquetas.all %}
-                                    <span class="badge" style="background-color: {{ etiqueta.color }}">{{ etiqueta.nombre }}</span>
-                                {% endfor %}
-                            </p>
-                        {% endif %}
-                    </div>
-                    <form method="post" action="{% url 'toggle_completada' tarea.id %}" class="d-inline">
-                        {% csrf_token %}
-                        {% if tarea.completada %}
-                            <button class="btn btn-sm btn-success">✔ Completada</button>
-                        {% else %}
-                            <button class="btn btn-sm btn-outline-secondary">Marcar como hecha</button>
-                        {% endif %}
-                    </form>
-                    <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
-                    <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-sm btn-outline-danger ms-2">Eliminar</a>
-                </li>
-            {% endfor %}
-        </ul>
+    <ul class="list-group">
+        {% for tarea in tareas %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ tarea.titulo }}</strong><br>
+
+                <small>
+                    Inicio: {{ tarea.fecha }} {{ tarea.hora|default:"" }}<br>
+                    {% if tarea.fecha_fin or tarea.hora_fin %}
+                    Fin: {{ tarea.fecha_fin|default:tarea.fecha }} {{ tarea.hora_fin|default:"" }}
+                    {% endif %}
+                </small>
+
+                {% if tarea.descripcion %}
+                <p class="mb-0">{{ tarea.descripcion }}</p>
+                {% endif %}
+
+                {% if tarea.meta %}
+                <p class="text-muted mb-0"><small>Meta asociada: {{ tarea.meta.titulo }}</small></p>
+                {% endif %}
+
+                {% if tarea.etiquetas.all %}
+                <p class="mb-0">
+                    {% for etiqueta in tarea.etiquetas.all %}
+                    <span class="badge" style="background-color: {{ etiqueta.color }}">{{ etiqueta.nombre }}</span>
+                    {% endfor %}
+                </p>
+                {% endif %}
+            </div>
+            <div class="d-flex align-items-center">
+                <form method="post" action="{% url 'toggle_completada' tarea.id %}" class="d-inline me-2">
+                    {% csrf_token %}
+                    {% if tarea.completada %}
+                    <button class="btn btn-sm btn-success">✔ Completada</button>
+                    {% else %}
+                    <button class="btn btn-sm btn-outline-secondary">Marcar como hecha</button>
+                    {% endif %}
+                </form>
+                <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-outline-primary me-2">Editar</a>
+                <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
     {% else %}
-        <p>No tienes tareas registradas.</p>
+    <p>No tienes tareas registradas.</p>
     {% endif %}
 </div>
 {% endblock %}

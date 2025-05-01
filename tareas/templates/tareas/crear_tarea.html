@@ -16,12 +16,24 @@
       {{ form.descripcion }}
     </div>
     <div class="form-group">
-      <label for="id_fecha">Fecha</label>
-      {{ form.fecha }}
+      <label for="id_fecha">Fecha de Inicio</label>
+      <input type="text" class="form-control flatpickr-date" id="id_fecha" name="fecha"
+        value="{{ form.fecha.value|default_if_none:'' }}">
     </div>
     <div class="form-group">
-      <label for="id_hora">Hora</label>
-      {{ form.hora }}
+      <label for="id_hora">Hora de Inicio</label>
+      <input type="text" class="form-control flatpickr-time" id="id_hora" name="hora"
+        value="{{ form.hora.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+      <label for="id_fecha_fin">Fecha de Fin</label>
+      <input type="text" class="form-control flatpickr-date" id="id_fecha_fin" name="fecha_fin"
+        value="{{ form.fecha_fin.value|default_if_none:'' }}">
+    </div>
+    <div class="form-group">
+      <label for="id_hora_fin">Hora de Fin</label>
+      <input type="text" class="form-control flatpickr-time" id="id_hora_fin" name="hora_fin"
+        value="{{ form.hora_fin.value|default_if_none:'' }}">
     </div>
     <div class="form-group">
       <label>Etiquetas</label>
@@ -29,9 +41,30 @@
     </div>
     <div class="mb-3">
       <a href="{% url 'crear_etiqueta' %}" class="btn btn-outline-info btn-sm">+ Crear Etiqueta</a>
-  </div>
+    </div>
     <button type="submit" class="btn btn-success mt-3">Crear Tarea</button>
     <a href="{% url 'tareas' %}" class="btn btn-secondary mt-3">Cancelar</a>
   </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Flatpickr CSS y JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+  flatpickr(".flatpickr-date", {
+    dateFormat: "Y-m-d",
+    locale: "es"
+  });
+
+  flatpickr(".flatpickr-time", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true,
+    locale: "es"
+  });
+</script>
 {% endblock %}
