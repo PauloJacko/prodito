@@ -187,6 +187,15 @@ document.addEventListener('DOMContentLoaded', function () {
     modal.close()
   }
 
+  fetch('/api/tareas/')
+    .then((response) => response.json())
+    .then((tareas) => {
+      console.log({ tareas })
+      tareas.forEach((t) => (t.calendarId = 'local'))
+      cal.createEvents(tareas)
+    })
+    .catch((error) => console.error('Error al cargar tareas:', error))
+
   const cargarEventos = () => {
     const anio = parseInt(yearSelector.value)
     const mes = parseInt(monthSelector.value) + 1
@@ -203,15 +212,6 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch((err) => {
         console.error('Error al obtener eventos:', err)
       })
-
-    fetch('/api/tareas/')
-      .then((response) => response.json())
-      .then((tareas) => {
-        console.log({ tareas })
-        tareas.forEach((t) => (t.calendarId = 'local'))
-        cal.createEvents(tareas)
-      })
-      .catch((error) => console.error('Error al cargar tareas:', error))
   }
 
   cargarEventos()
