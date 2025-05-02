@@ -346,26 +346,43 @@ def crear_tarea_api(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            titulo = data.get("titulo")
-            fecha = data.get("fecha")
-            descripcion = data.get("descripcion")
 
-            if not titulo or not fecha:
+            titulo = data.get("titulo")
+            descripcion = data.get("descripcion")
+            fecha_str = data.get("fecha")
+            hora_str = data.get("hora")
+            fecha_fin_str = data.get("fecha_fin")
+            hora_fin_str = data.get("hora_fin")
+
+            if not titulo or not fecha_str or not hora_str:
                 return JsonResponse({"error": "Faltan datos requeridos"}, status=400)
 
             try:
-                fecha_obj = datetime.strptime(fecha, "%Y-%m-%d").date()
+                fecha = datetime.strptime(fecha_str, "%Y-%m-%d").date()
+                hora = datetime.strptime(hora_str, "%H:%M").time()
+                fecha_fin = (
+                    datetime.strptime(fecha_fin_str, "%Y-%m-%d").date()
+                    if fecha_fin_str
+                    else None
+                )
+                hora_fin = (
+                    datetime.strptime(hora_fin_str, "%H:%M").time()
+                    if hora_fin_str
+                    else None
+                )
             except ValueError:
                 return JsonResponse(
-                    {"error": "Formato de fecha inválido. Debe ser 'YYYY-MM-DD'"},
-                    status=400,
+                    {"error": "Formato de fecha u hora inválido."}, status=400
                 )
 
             tarea = Task.objects.create(
                 titulo=titulo,
-                fecha=fecha_obj,
                 descripcion=descripcion,
-                usuario=request.user,
+                fecha=fecha,
+                hora=hora,
+                fecha_fin=fecha_fin,
+                hora_fin=hora_fin,
+                usuario=request.user,  # asegúrate de que request.user esté disponible
             )
 
             crear_evento_google_calendar(request, tarea)

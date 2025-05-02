@@ -4,9 +4,25 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnCancelar = document.getElementById('btnCancelar')
   const monthSelector = document.getElementById('monthSelector')
   const yearSelector = document.getElementById('yearSelector')
+  const btnNuevaTarea = document.getElementById('btnAbrirModal')
+
   btnCancelar.addEventListener('click', function () {
     modal.style.display = 'none'
     modal.close()
+  })
+
+  btnNuevaTarea.addEventListener('click', function () {
+    const fechaInicio = new Date()
+    const fechaFin = new Date()
+    fechaFin.setHours(fechaFin.getHours() + 1)
+    fechaFin.setSeconds(0, 0)
+    fechaInicio.setSeconds(0, 0)
+    pickerFechaInicio.setDate(fechaInicio)
+    pickerHoraInicio.setDate(fechaInicio)
+    pickerFechaFin.setDate(fechaFin)
+    pickerHoraFin.setDate(fechaFin)
+    modal.style.display = 'block'
+    modal.showModal()
   })
 
   modal.addEventListener('keydown', function (event) {
@@ -17,6 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })
 
+  function formatTime(date) {
+    const d = new Date(date)
+    const hours = d.getHours().toString().padStart(2, '0')
+    const minutes = d.getMinutes().toString().padStart(2, '0')
+    return `${hours}:${minutes}`
+  }
+
   const cal = new Calendar('#calendar', {
     defaultView: 'month',
     theme: {
@@ -26,22 +49,27 @@ document.addEventListener('DOMContentLoaded', function () {
         color: '#ffffff'
       }
     },
+    isReadOnly: false,
+    template: {
+      time(event) {
+        const { start, end, title } = event
+
+        return `<span>${formatTime(start)}~${formatTime(end)} ${title}</span>`
+      },
+      allday(event) {
+        return `<span style="color: gray;">${event.title}</span>`
+      }
+    },
     calendars: [
       {
         id: 'local',
-        name: 'Tareas',
-        color: '#ffffff',
-        bgColor: '#00a9ff',
-        dragBgColor: '#00a9ff',
-        borderColor: '#00a9ff'
+        name: 'Personal',
+        backgroundColor: '#03bd9e'
       },
       {
         id: 'google',
-        name: 'Google Calendar',
-        color: '#ffffff',
-        bgColor: '#03bd9e',
-        dragBgColor: '#03bd9e',
-        borderColor: '#03bd9e'
+        name: 'Work',
+        backgroundColor: '#00a9ff'
       }
     ]
   })
@@ -118,34 +146,41 @@ document.addEventListener('DOMContentLoaded', function () {
   })
 
   updateSelectors()
-
   document
     .getElementById('formCrearTarea')
     .addEventListener('submit', function (e) {
       e.preventDefault()
 
       const titulo = document.getElementById('tituloInput').value
-      const fecha = document.getElementById('fechaInput').value
       const descripcion = document.getElementById('descripcionInput').value
 
-      const fechaFormateada = new Date(fecha).toISOString().split('T')[0]
+      const fecha = document.getElementById('fechaInicioInput').value
+      const hora = document.getElementById('horaInicioInput').value
+      const fecha_fin = document.getElementById('fechaFinInput').value
+      const hora_fin = document.getElementById('horaFinInput').value
 
       const nuevoEvento = {
         id: String(new Date().getTime()),
         calendarId: 'local',
         title: titulo,
-        start: fecha,
-        end: fechaFormateada,
+        start: `${fecha}T${hora}`,
+        end: `${fecha_fin}T${hora_fin}`,
         category: 'time'
       }
 
-      console.log({ fecha })
       cal.createEvents([nuevoEvento])
 
       fetch('/api/crear-tarea/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo, fecha: fechaFormateada, descripcion })
+        body: JSON.stringify({
+          titulo,
+          descripcion,
+          fecha,
+          hora,
+          fecha_fin,
+          hora_fin
+        })
       })
         .then((response) => {
           if (response.ok) {
@@ -161,30 +196,64 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
   cal.on('selectDateTime', function (event) {
-    const fechaSeleccionada = event.start
-
-    abrirModal(fechaSeleccionada)
+    const fechaInicio = event.start
+    const fechaFin = event.end
+    abrirModal(fechaInicio, fechaFin)
   })
 
-  const picker = flatpickr('#fechaInput', {
+  const pickerFechaInicio = flatpickr('#fechaInicioInput', {
+    dateFormat: 'Y-m-d',
+    static: true,
+    position: 'above'
+  })
+
+  const pickerHoraInicio = flatpickr('#horaInicioInput', {
     enableTime: true,
-    dateFormat: 'Y-m-d H:i',
+    noCalendar: true,
+    dateFormat: 'H:i',
     time_24hr: true,
     static: true,
     position: 'above'
   })
 
-  function abrirModal(fecha) {
-    fecha.setHours(12, 0, 0, 0)
+  const pickerFechaFin = flatpickr('#fechaFinInput', {
+    dateFormat: 'Y-m-d',
+    static: true,
+    position: 'above'
+  })
 
-    picker.setDate(fecha)
+  const pickerHoraFin = flatpickr('#horaFinInput', {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: 'H:i',
+    time_24hr: true,
+    static: true,
+    position: 'above'
+  })
+
+  function abrirModal(fechaInicio, fechaFin) {
+    fechaInicio.setSeconds(0, 0)
+    fechaFin.setSeconds(0, 0)
+
+    pickerFechaInicio.setDate(fechaInicio)
+    pickerHoraInicio.setDate(fechaInicio)
+    pickerFechaFin.setDate(fechaFin)
+    pickerHoraFin.setDate(fechaFin)
 
     modal.style.display = 'block'
     modal.showModal()
   }
 
   function cerrarModal() {
+    const form = document.getElementById('formCrearTarea')
+
     modal.close()
+    form.reset()
+
+    if (pickerFechaInicio) pickerFechaInicio.clear()
+    if (pickerHoraInicio) pickerHoraInicio.clear()
+    if (pickerFechaFin) pickerFechaFin.clear()
+    if (pickerHoraFin) pickerHoraFin.clear()
   }
 
   fetch('/api/tareas/')
@@ -206,6 +275,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return res.json()
       })
       .then((eventos) => {
+        cal.clear()
         cal.createEvents(eventos)
       })
       .catch((err) => {

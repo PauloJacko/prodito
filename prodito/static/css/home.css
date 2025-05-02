@@ -165,8 +165,8 @@
 
 /* Modal (crear tarea rápida, opcional) */
 .modal {
-  height: 40rem;
-  width: 40rem;
+  height: 50rem;
+  width: 50rem;
   border-radius: 0.5rem;
   border: none;
 }
@@ -186,4 +186,14 @@ menu {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+}
+.custom-tooltip {
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
