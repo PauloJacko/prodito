@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tienda de Skins{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tienda.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 tienda-container">
+
+    <!-- Sección hero con mascota -->
+    <div class="row align-items-center mb-5 hero-section">
+        <div class="col-md-7 text-center text-md-start">
+            <h1 class="mb-3">¡Bienvenido a la Tienda de Skins!</h1>
+            <p class="lead">Canjea tus ProditoPoints por aspectos exclusivos y personaliza tu experiencia.</p>
+            <div class="proditopoints-card text-center mb-4">
+                <h4>Tienes <strong>{{ puntos }}</strong> ProditoPoints</h4>
+            </div>
+        </div>
+        <div class="col-md-5 text-center">
+            <div class="mascota-container position-relative">
+                <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota"
+                class="mascota-img">
+                <div class="globo-dialogo">
+                    ¡Canjea tus puntos aquí!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección catálogo -->
+    <div class="row">
+        {% for skin in skins %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 text-center tienda-card">
+                <div class="tienda-card-img">
+                    <img src="{% static 'images/placeholder_skin.png' %}" alt="{{ skin.nombre }}">
+                </div>                
+                <div class="card-body">
+                    <h5 class="card-title">{{ skin.nombre }}</h5>
+                    <p class="card-text">Precio: <strong>{{ skin.precio }}</strong> PP</p>
+
+                    {% if skin in skins_canjeadas %}
+                        <button class="btn btn-success" disabled>Ya canjeada</button>
+                    {% elif puntos >= skin.precio %}
+                        <a href="{% url 'canjear_skin' skin.id %}" class="btn btn-primary">Canjear</a>
+                    {% else %}
+                        <button class="btn btn-secondary" disabled>Insuficientes PP</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Sección motivación -->
+    <div class="text-center mt-5">
+        <p class="lead">Sigue completando tareas para desbloquear más skins. ¡Pródito cuenta contigo!</p>
+        <a href="{% url 'home' %}" class="btn btn-outline-primary mt-2">Volver al Inicio</a>
+    </div>
+
+</div>
+{% endblock %}

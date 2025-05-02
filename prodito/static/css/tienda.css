@@ -1,0 +1,117 @@
+/* Contenedor general */
+.tienda-container {
+    max-width: 1200px;
+}
+
+/* Sección hero */
+.hero-section h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    color: var(--azul-oscuro);
+}
+
+.hero-section .lead {
+    font-family: 'Roboto', sans-serif;
+    color: var(--azul-oscuro);
+}
+
+.hero-section h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--amarillo-dorado);
+}
+
+/* Mascota */
+.mascota-container {
+    position: relative;
+    display: inline-block;
+}
+
+.mascota-img {
+    width: 180px;
+    height: auto;
+}
+
+.globo-dialogo {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--blanco);
+    color: var(--azul-oscuro);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.proditopoints-card {
+    background-color: var(--amarillo-dorado);
+    color: var(--azul-oscuro);
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin: 0 auto;
+    max-width: 400px;
+}
+
+/* Tarjetas de skins */
+.col-lg-3.col-md-4.col-sm-6 {
+    display: flex;
+    justify-content: center;
+}
+
+.tienda-card {
+    width: 100%;
+    max-width: 260px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    padding: 1rem;
+    background-color: white;
+}
+
+.tienda-card:hover {
+    transform: translateY(-5px);
+}
+
+.tienda-card-img {
+    width: 100%;
+    height: 180px;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tienda-card-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.tienda-card h5 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.tienda-card .card-text {
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    font-family: 'Poppins', sans-serif;
+    border-radius: 30px;
+    margin-top: auto;
+}

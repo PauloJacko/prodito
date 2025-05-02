@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import DateTimeField, ExpressionWrapper, F
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 from prodito.views import (
     crear_evento_google_calendar,
@@ -14,7 +15,7 @@ from prodito.views import (
 )
 
 from .forms import EtiquetaForm, MetaForm, TaskForm
-from .models import Etiqueta, Meta, Task
+from .models import Etiqueta, Meta, Task, Skin, SkinUsuario, ReportePuntos
 
 
 @login_required
@@ -245,3 +246,47 @@ def eliminar_etiqueta(request, etiqueta_id):
         etiqueta.delete()
         return redirect("etiquetas")
     return render(request, "tareas/eliminar_etiqueta.html", {"etiqueta": etiqueta})
+
+# Sistema de Recompensas
+
+@login_required
+def tienda(request):
+    skins = Skin.objects.all()
+    user_profile = request.user.perfil
+    skins_canjeadas = SkinUsuario.objects.filter(usuario=request.user).values_list('skin_id', flat=True)
+    puntos = user_profile.puntos
+
+    context = {
+        'skins': skins,
+        'skins_canjeadas': skins_canjeadas,
+        'puntos': puntos,
+    }
+    return render(request, 'tareas/tienda.html', context)
+
+@login_required
+def canjear_skin(request, skin_id):
+    skin = get_object_or_404(Skin, id=skin_id)
+    user_profile = request.user.perfil
+
+    # Verificar si ya tiene la skin
+    if SkinUsuario.objects.filter(usuario=request.user, skin=skin).exists():
+        messages.error(request, "Ya tienes esta skin.")
+    elif user_profile.puntos >= skin.precio:
+        user_profile.puntos -= skin.precio
+        user_profile.save()
+
+        # Registrar el canje
+        SkinUsuario.objects.create(usuario=request.user, skin=skin)
+
+        # Registrar en el historial
+        ReportePuntos.objects.create(
+            usuario=request.user,
+            descripcion=f"Canjeó la skin {skin.nombre}",
+            puntos_cambiados=-skin.precio
+        )
+
+        messages.success(request, f"¡Has canjeado {skin.nombre} exitosamente!")
+    else:
+        messages.error(request, "No tienes suficientes ProditoPoints para esta skin.")
+
+    return redirect('tienda')

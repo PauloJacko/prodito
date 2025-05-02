@@ -20,4 +20,8 @@ urlpatterns = [
     path("etiquetas/crear/", views.crear_etiqueta, name="crear_etiqueta"),
     path("etiquetas/editar/<int:etiqueta_id>/", views.editar_etiqueta, name="editar_etiqueta"),
     path("etiquetas/eliminar/<int:etiqueta_id>/", views.eliminar_etiqueta, name="eliminar_etiqueta"),
+
+    # Recompensas
+    path('tienda/', views.tienda, name='tienda'),
+    path('tienda/canjear/<int:skin_id>/', views.canjear_skin, name='canjear_skin'),
 ]

@@ -42,3 +42,43 @@ class Meta(models.Model):
 
     def __str__(self):
         return self.titulo
+
+# Extiende al usuario con sus puntos
+class PerfilUsuario(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    puntos = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.puntos} PP"
+
+# Define los cosméticos (skins) disponibles
+class Skin(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True)
+    precio = models.IntegerField()
+    imagen = models.URLField(blank=True)  # opcional: puedes guardar URL de la imagen
+
+    def __str__(self):
+        return f"{self.nombre} ({self.precio} PP)"
+
+# Relación entre usuario y skins que ya canjeó
+class SkinUsuario(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='skins_obtenidas')
+    skin = models.ForeignKey(Skin, on_delete=models.CASCADE)
+    fecha_canje = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'skin')  # evita que canjee dos veces la misma skin
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.skin.nombre}"
+
+# Historial de obtención/gasto de puntos
+class ReportePuntos(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reportes_puntos')
+    descripcion = models.TextField()
+    puntos_cambiados = models.IntegerField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.puntos_cambiados} puntos el {self.fecha}"
