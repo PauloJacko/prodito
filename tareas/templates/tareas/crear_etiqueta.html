@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/etiquetas.css' %}">
+{% endblock %}
+
 {% block title %}Crear Etiqueta{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
+  <div class="form-etiqueta-crear text-center">
     <h2>Crear Nueva Etiqueta</h2>
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{% url 'etiquetas' %}" class="btn btn-secondary">Cancelar</a>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="text-center mt-3">
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <a href="{% url 'etiquetas' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock %}

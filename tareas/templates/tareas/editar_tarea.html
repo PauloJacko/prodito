@@ -1,9 +1,15 @@
 {% extends "base.html" %}
+
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
+{% endblock %}
+
 {% block title %}Editar Tarea{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">Editar Tarea</h2>
+<div class="container mt-5 form-tarea-editar">
+  <h2 class="mb-4 text-center">Editar Tarea</h2>
 
   <form method="post">
     {% csrf_token %}
@@ -41,19 +47,23 @@
         value="{{ form.hora_fin.value|default_if_none:'' }}">
     </div>
 
-    <div class="form-group">
+    <div class="form-group text-center">
       <label>Etiquetas</label>
       {{ form.etiquetas }}
     </div>
 
-    <div class="mb-3">
-      <a href="{% url 'crear_etiqueta' %}" class="btn btn-outline-info btn-sm">+ Crear Etiqueta</a>
+    <div class="mb-3 text-center">
+      <a href="{% url 'crear_etiqueta' %}" class="btn btn-info btn-sm text-center">+ Crear Etiqueta</a>
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
-    <a href="{% url 'tareas' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    <div class="text-center mt-3">
+      <button type="submit" class="btn btn-success">Guardar Cambios</button>
+      <a href="{% url 'tareas' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+
   </form>
 </div>
+{% endblock %}
 
 {% block extra_js %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
@@ -62,14 +72,12 @@
   document.addEventListener('DOMContentLoaded', function () {
     flatpickr("#id_fecha", {
       enableTime: false,
-      dateFormat: "Y-m-d", // Formato para la fecha
+      dateFormat: "Y-m-d"
     });
     flatpickr("#id_fecha_fin", {
       enableTime: false,
-      dateFormat: "Y-m-d", // Formato para la fecha
+      dateFormat: "Y-m-d"
     });
   });
 </script>
-{% endblock %}
-
 {% endblock %}

@@ -163,37 +163,164 @@
   height: 800px;
 }
 
-/* Modal (crear tarea rápida, opcional) */
+/* Modal general */
 .modal {
-  height: 50rem;
-  width: 50rem;
-  border-radius: 0.5rem;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
   border: none;
+  padding: 0;
 }
 
 .modal::backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
-  background: white;
-  border: none;
-  border-radius: 10px;
-  height: 100%;
+/* Contenido del modal */
+.modal-tarea-content {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
-menu {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
+/* Título */
+.modal-tarea-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
 }
-.custom-tooltip {
-  background: #333;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  pointer-events: none;
-  z-index: 9999;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+/* Grupos de campos */
+.modal-tarea-group {
+  margin-bottom: 1.2rem;
+}
+
+/* Campos */
+.modal-tarea-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.modal-tarea-group input,
+.modal-tarea-group textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.modal-tarea-group input:focus,
+.modal-tarea-group textarea:focus {
+  border-color: #17ad4e;
+  outline: none;
+}
+
+/* Botones */
+.modal-tarea-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-tarea-actions .btn {
+  min-width: 100px;
+  border-radius: 20px;
+}
+
+.modal-tarea-actions .btn-success {
+  background-color: #17ad4e;
+  border: none;
+}
+
+.modal-tarea-actions .btn-success:hover {
+  background-color: #63ae7e;
+}
+
+.modal-tarea-actions .btn-outline-danger {
+  border: 1px solid #dd4928;
+  color: #dd4928;
+}
+
+.modal-tarea-actions .btn-outline-danger:hover {
+  background-color: #EF4444;
+  color: white;
+}
+
+/* Apilar columnas en pantallas pequeñas */
+@media (max-width: 992px) {
+  .content-sections {
+    flex-direction: column;
+  }
+
+  .left-column,
+  .calendar-column {
+    width: 100%;
+  }
+
+  #calendar {
+    height: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bienvenida-home {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    gap: 1rem;
+  }
+
+  .boton-nueva-tarea {
+    margin-right: 0;
+    justify-content: flex-start;
+  }
+
+  .monito-img {
+    height: 100px;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .home-layout {
+    padding: 1rem;
+  }
+
+  .calendar-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .calendar-controls > div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal {
+    width: 95%;
+    height: auto;
+  }
+
+  .modal-content {
+    padding: 1rem;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  menu {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
 }

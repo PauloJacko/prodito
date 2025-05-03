@@ -1,15 +1,24 @@
 {% extends 'base.html' %}
 
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/etiquetas.css' %}">
+{% endblock %}
+
 {% block title %}Eliminar Etiqueta{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
+  <div class="form-etiqueta-eliminar text-center">
     <h2>Eliminar Etiqueta</h2>
     <p>¿Estás seguro de que deseas eliminar la etiqueta "<strong>{{ etiqueta.nombre }}</strong>"?</p>
     <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar</button>
-        <a href="{% url 'etiquetas' %}" class="btn btn-secondary">Cancelar</a>
+      {% csrf_token %}
+      <div class="text-center mt-3">
+      <button type="submit" class="btn btn-danger">Eliminar</button>
+      <a href="{% url 'etiquetas' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock %}

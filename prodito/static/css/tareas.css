@@ -1,0 +1,54 @@
+.form-tarea-crear,
+.form-tarea-editar,
+.form-tarea-eliminar {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-medium, 0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.form-tarea-crear h2,
+.form-tarea-editar h2,
+.form-tarea-eliminar h2 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--azul-oscuro, #1E293B);
+}
+
+.form-tarea-crear label,
+.form-tarea-editar label {
+  font-weight: 600;
+  color: var(--azul-oscuro, #1E293B);
+}
+
+.form-tarea-crear .form-control,
+.form-tarea-editar .form-control {
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.form-tarea-crear .btn,
+.form-tarea-editar .btn,
+.form-tarea-eliminar .btn {
+  margin-right: 0.5rem;
+}
+
+.form-tarea-crear .btn-success,
+.form-tarea-editar .btn-success {
+  background-color: var(--verde-claro, #1bc359);
+  border: none;
+}
+
+.form-tarea-crear .btn-outline-info,
+.form-tarea-editar .btn-outline-info {
+  border-radius: 20px;
+}
+
+.form-tarea-eliminar {
+  background-color: #fff8f8;
+  border: 1px solid #f87171;
+}
+
+.form-tarea-eliminar h2 {
+  color: #dc2626;
+}

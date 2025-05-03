@@ -1,0 +1,63 @@
+.form-etiqueta-crear,
+.form-etiqueta-editar,
+.form-etiqueta-eliminar {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-etiqueta-crear h2 {
+    font-size: 2rem;
+    color: #40c571;
+  }
+  
+  .form-etiqueta-crear .btn {
+    margin-right: 0.5rem;
+  }
+  
+  .form-etiqueta-crear .btn-success {
+    background-color: var(--verde-claro, #17ad4e);
+    border: none;
+  }
+  
+  .form-etiqueta-crear .btn-outline-info {
+    border-radius: 20px;
+  }
+ 
+  .form-etiqueta-editar h2 {
+    font-size: 2rem;
+    color: #007BFF;
+  }
+  
+  .form-etiqueta-editar .btn {
+    margin-right: 0.5rem;
+  }
+  
+  .form-etiqueta-editar .btn-primary {
+    background-color: var(--azul-claro, #007BFF);
+    border: none;
+  }
+  
+  .form-etiqueta-editar .btn-outline-info {
+    border-radius: 20px;
+  }
+  
+
+  .form-etiqueta-eliminar h2 {
+    font-size: 2rem;
+    color: #FF5733;
+  }
+  
+  .form-etiqueta-eliminar .btn {
+    margin-right: 0.5rem;
+  }
+  
+  .form-etiqueta-eliminar .btn-danger {
+    background-color: var(--rojo-claro, #dd4928);
+    border: none;
+  }
+  
+  .form-etiqueta-eliminar .btn-outline-info {
+    border-radius: 20px;
+  }

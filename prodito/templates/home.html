@@ -32,30 +32,43 @@
   </div>
 
   <!-- Modal creación de tarea -->
-  <dialog id="modalCrearTarea" class="modal">
-    <form method="dialog" id="formCrearTarea" class="modal-content form-group">
-      <h2>Crear Nueva Tarea</h2>
-
-      <label for="tituloInput">Título:</label><br>
-      <input type="text" id="tituloInput" class="form-control" required><br><br>
-
-      <label>Fecha de inicio:</label>
-      <input type="text" id="fechaInicioInput" />
-
-      <label>Hora de inicio:</label>
-      <input type="text" id="horaInicioInput" />
-
-      <label>Hora de fin:</label>
-      <input type="text" id="horaFinInput" />
-
-      <label>Fecha de fin:</label>
-      <input type="text" id="fechaFinInput" />
-      <label for="descripcionInput">Descripción:</label><br>
-      <textarea id="descripcionInput" class="form-control" rows="3"></textarea><br><br>
-
-      <menu>
+  <dialog id="modalCrearTarea" class="modal modal-tarea">
+    <form method="dialog" id="formCrearTarea" class="modal-content modal-tarea-content">
+      <h2 class="modal-tarea-title text-center">Crear Nueva Tarea</h2>
+  
+      <div class="modal-tarea-group">
+        <label for="tituloInput">Título:</label>
+        <input type="text" id="tituloInput" class="form-control" required>
+      </div>
+  
+      <div class="modal-tarea-group">
+        <label for="fechaInicioInput">Fecha de inicio:</label>
+        <input type="text" id="fechaInicioInput" class="form-control">
+      </div>
+  
+      <div class="modal-tarea-group">
+        <label for="horaInicioInput">Hora de inicio:</label>
+        <input type="text" id="horaInicioInput" class="form-control">
+      </div>
+  
+      <div class="modal-tarea-group">
+        <label for="horaFinInput">Hora de fin:</label>
+        <input type="text" id="horaFinInput" class="form-control">
+      </div>
+  
+      <div class="modal-tarea-group">
+        <label for="fechaFinInput">Fecha de fin:</label>
+        <input type="text" id="fechaFinInput" class="form-control">
+      </div>
+  
+      <div class="modal-tarea-group">
+        <label for="descripcionInput">Descripción:</label>
+        <textarea id="descripcionInput" class="form-control" rows="3"></textarea>
+      </div>
+  
+      <menu class="modal-tarea-actions">
         <button value="cancel" class="btn btn-outline-danger" type="button" id="btnCancelar">Cancelar</button>
-        <button value="confirm" class="btn btn-primary" type="submit">Guardar</button>
+        <button value="confirm" class="btn btn-success" type="submit">Guardar</button>
       </menu>
     </form>
   </dialog>

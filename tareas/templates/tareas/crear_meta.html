@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/metas.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
-    <h2>Nueva Meta</h2>
+  <div class="form-meta-crear">
+    <h2 class="mb-4 text-center">Nueva Meta</h2>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Guardar Meta</button>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="text-center mt-3">
+      <button type="submit" class="btn btn-success">Guardar Meta</button>
+      <a href="{% url 'metas' %}" class="btn btn-secondary">Cancelar</a>
+      </div>
     </form>
+  </div>
 </div>
 {% endblock %}
