@@ -7,3 +7,11 @@ class TareasConfig(AppConfig):
 
     def ready(self):
         import tareas.signals
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "tareas"
+
+    def ready(self) -> None:
+        from tareas.notificaciones.scheduler import iniciar_scheduler
+
+        iniciar_scheduler()
+        return super().ready()

@@ -213,7 +213,8 @@ document.addEventListener('DOMContentLoaded', function () {
     dateFormat: 'H:i',
     time_24hr: true,
     static: true,
-    position: 'above'
+    position: 'above',
+    minuteIncrement: 1
   })
 
   const pickerFechaFin = flatpickr('#fechaFinInput', {
@@ -228,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
     dateFormat: 'H:i',
     time_24hr: true,
     static: true,
+    minuteIncrement: 1,
     position: 'above'
   })
 
