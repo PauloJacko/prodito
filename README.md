@@ -104,6 +104,12 @@ python manage.py migrate
 
 Si el comando se ejecuta sin errores, ¡la conexión ha sido exitosa!
 
+5. Crear SP para notificacion:
+
+```bash
+python manage.py crear_sp
+```
+
 ## 🚀 Ejecutando el proyecto
 
 1. Inicia el servidor de desarrollo:

@@ -42,3 +42,17 @@ class Meta(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+class Notificacion(models.Model):
+    task = models.ForeignKey(
+        Task, on_delete=models.CASCADE, related_name="notificaciones"
+    )
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=255)
+    programada_para = models.DateTimeField()
+    leida = models.BooleanField(default=False)
+    creada_en = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notif: {self.task.titulo} → {self.usuario.username}"
