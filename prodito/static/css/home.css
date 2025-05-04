@@ -253,7 +253,8 @@
   color: white;
 }
 
-/* Apilar columnas en pantallas pequeñas */
+/* RESPONSIVIDAD */
+
 @media (max-width: 992px) {
   .content-sections {
     flex-direction: column;

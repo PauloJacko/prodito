@@ -21,6 +21,8 @@ urlpatterns = [
     path("tareas/", include("tareas.urls")),
     path("mi_perfil/", views.mi_perfil, name="mi_perfil"),
     path("generar_reporte/", views.generar_reporte, name="generar_reporte"),
+    path('api/notificaciones/', views.notificaciones_json, name='notificaciones_json'),
+    path('api/notificaciones/<int:id>/leida/', views.marcar_notificacion_leida, name='marcar_notificacion_leida'),
     path(
         "cambiar_contrasena/",
         auth_views.PasswordChangeView.as_view(
@@ -43,4 +45,5 @@ urlpatterns = [
         name="eventos_google_calendar",
     ),
     path("api/crear-tarea/", views.crear_tarea_api, name="crear_tarea_api"),
+
 ]

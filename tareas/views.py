@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 
+
 from prodito.views import (
     crear_evento_google_calendar,
     eliminar_evento_google_calendar,
@@ -247,6 +248,7 @@ def eliminar_etiqueta(request, etiqueta_id):
         return redirect("etiquetas")
     return render(request, "tareas/eliminar_etiqueta.html", {"etiqueta": etiqueta})
 
+
 # Sistema de Recompensas
 
 @login_required
@@ -290,3 +292,5 @@ def canjear_skin(request, skin_id):
         messages.error(request, "No tienes suficientes ProditoPoints para esta skin.")
 
     return redirect('tienda')
+
+

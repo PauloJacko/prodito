@@ -17,6 +17,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+from django.http import JsonResponse
+from tareas.models import Notificacion
+from django.views.decorators.csrf import csrf_exempt
 
 from tareas.models import Task
 
@@ -494,6 +497,23 @@ def generar_reporte(request):
 
     return response
 
+#Notificaciones
+
+@login_required
+def notificaciones_json(request):
+    notificaciones = Notificacion.objects.filter(usuario=request.user, leida=False)
+    data = [
+        {"id": n.id, "mensaje": n.mensaje}
+        for n in notificaciones
+    ]
+    return JsonResponse(data, safe=False)
+
+@require_POST
+@login_required
+def marcar_notificacion_leida(request, id):
+    Notificacion.objects.filter(id=id, usuario=request.user).update(leida=True)
+    return JsonResponse({'ok': True})
+
 
 @require_POST
 @login_required
@@ -507,3 +527,4 @@ def eliminar_cuenta(request):
     logout(request)
     usuario.delete()
     return redirect("bienvenida")
+
