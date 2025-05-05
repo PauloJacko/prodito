@@ -20,8 +20,11 @@
         </div>
         <div class="col-md-5 text-center">
             <div class="mascota-container position-relative">
-                <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota"
-                class="mascota-img">
+                {% if user_profile.skin_activa and user_profile.skin_activa.imagen %}
+                    <img src="{{ user_profile.skin_activa.imagen }}" alt="Mascota activa" class="mascota-img">
+                {% else %}
+                    <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota por defecto" class="mascota-img">
+                {% endif %}
                 <div class="globo-dialogo">
                     ¡Canjea tus puntos aquí!
                 </div>
@@ -32,17 +35,26 @@
     <!-- Sección catálogo -->
     <div class="row">
         {% for skin in skins %}
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="col-lg-6 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
             <div class="card h-100 text-center tienda-card">
                 <div class="tienda-card-img">
-                    <img src="{% static 'images/placeholder_skin.png' %}" alt="{{ skin.nombre }}">
+                    {% if skin.imagen %}
+                        <img src="{{ skin.imagen }}" alt="{{ skin.nombre }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder_skin.png' %}" alt="{{ skin.nombre }}">
+                    {% endif %}
                 </div>                
                 <div class="card-body">
                     <h5 class="card-title">{{ skin.nombre }}</h5>
+                    <p class="card-description">{{ skin.descripcion }}</p>
                     <p class="card-text">Precio: <strong>{{ skin.precio }}</strong> PP</p>
 
-                    {% if skin in skins_canjeadas %}
-                        <button class="btn btn-success" disabled>Ya canjeada</button>
+                    {% if skin.id in skins_canjeadas %}
+                        {% if user_profile.skin_activa and user_profile.skin_activa.id == skin.id %}
+                            <button class="btn btn-success" disabled>✔ Skin Activa</button>
+                        {% else %}
+                            <a href="{% url 'activar_skin' skin.id %}" class="btn btn-outline-success">Activar</a>
+                        {% endif %}
                     {% elif puntos >= skin.precio %}
                         <a href="{% url 'canjear_skin' skin.id %}" class="btn btn-primary">Canjear</a>
                     {% else %}
@@ -61,4 +73,35 @@
     </div>
 
 </div>
+
+<!-- Modal de confirmación -->
+<div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-header justify-content-center border-0">
+          <h5 class="modal-title fw-bold" id="mensajeModalLabel">mensaje de pródito:</h5>
+        </div>
+        <div class="modal-body">
+          <p id="mensajeContenido"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if messages %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let mensajeTexto = "";
+    {% for message in messages %}
+        mensajeTexto += "{{ message|escapejs }}\n";
+      {% endfor %}
+  
+      if (mensajeTexto.trim() !== "") {
+        document.getElementById('mensajeContenido').innerText = mensajeTexto.trim();
+        let mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+        mensajeModal.show();
+      }
+    });
+  </script>
+  {% endif %}
 {% endblock %}

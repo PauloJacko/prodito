@@ -17,8 +17,11 @@
   <!-- Saludo -->
   <div class="bienvenida-home">
     <div class="bienvenida-usuario d-flex align-items-center gap-4">
-      <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota"
-        class="monito-img">
+      {% if user_profile.skin_activa and user_profile.skin_activa.imagen %}
+          <img src="{{ user_profile.skin_activa.imagen }}" alt="Mascota activa" class="monito-img">
+      {% else %}
+          <img src="https://res.cloudinary.com/dzlcfql7y/image/upload/v1744240295/prodito_risa_hijnjl.png" alt="Mascota por defecto" class="monito-img">
+      {% endif %}
       <div class="saludo-home">
         <h2 class="saludo-usuario">¡Hola, {{ request.user.first_name|default:"Usuario" }}!</h2>
         <p>¿Qué haremos hoy?</p>

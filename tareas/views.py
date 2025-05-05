@@ -293,4 +293,19 @@ def canjear_skin(request, skin_id):
 
     return redirect('tienda')
 
+@login_required
+def activar_skin(request, skin_id):
+    skin = get_object_or_404(Skin, id=skin_id)
+    user_profile = request.user.perfil
 
+    # Verificar si el usuario ya tiene esta skin canjeada
+    if not SkinUsuario.objects.filter(usuario=request.user, skin=skin).exists():
+        messages.error(request, "No puedes activar una skin que no has canjeado.")
+        return redirect('tienda')
+
+    # Activar la skin
+    user_profile.skin_activa = skin
+    user_profile.save()
+
+    messages.success(request, f"La skin '{skin.nombre}' ha sido activada.")
+    return redirect('tienda')

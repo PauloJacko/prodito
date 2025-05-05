@@ -24,4 +24,5 @@ urlpatterns = [
     # Recompensas
     path('tienda/', views.tienda, name='tienda'),
     path('tienda/canjear/<int:skin_id>/', views.canjear_skin, name='canjear_skin'),
+    path('activar_skin/<int:skin_id>/', views.activar_skin, name='activar_skin'),
 ]

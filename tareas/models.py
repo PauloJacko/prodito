@@ -47,6 +47,7 @@ class Meta(models.Model):
 class PerfilUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     puntos = models.IntegerField(default=0)
+    skin_activa = models.ForeignKey('Skin', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.usuario.username} - {self.puntos} PP"
@@ -56,8 +57,8 @@ class Skin(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
     precio = models.IntegerField()
-    imagen = models.URLField(blank=True)  # opcional: puedes guardar URL de la imagen
-
+    imagen = models.URLField(blank=True)
+    
     def __str__(self):
         return f"{self.nombre} ({self.precio} PP)"
 
@@ -68,7 +69,7 @@ class SkinUsuario(models.Model):
     fecha_canje = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('usuario', 'skin')  # evita que canjee dos veces la misma skin
+        unique_together = ('usuario', 'skin')
 
     def __str__(self):
         return f"{self.usuario.username} - {self.skin.nombre}"
