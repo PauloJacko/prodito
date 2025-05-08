@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
+{% endblock %}
+
 {% block title %}Mis Tareas{% endblock %}
 
 {% block content %}
@@ -39,12 +44,18 @@
                 {% endif %}
             </div>
             <div class="d-flex align-items-center">
-                <form method="post" action="{% url 'toggle_completada' tarea.id %}" class="d-inline me-2">
+                <form method="post" action="{% url 'toggle_completada' tarea.id %}" class="d-inline me-2 completar-tarea-form">
                     {% csrf_token %}
                     {% if tarea.completada %}
-                    <button class="btn btn-sm btn-success">✔ Completada</button>
+                    <button type="submit" class="btn btn-sm btn-success">✔ Completada</button>
                     {% else %}
-                    <button class="btn btn-sm btn-outline-secondary">Marcar como hecha</button>
+                    <div class="position-relative">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary completar-btn">Marcar como hecha</button>
+                        <span class="recompensa-msg position-absolute d-none">
+                            +5PP
+                            <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1746716911/prodito_feliz_suyaob-removebg-preview_ht5uf3.png" alt="Prodito feliz" style="width: 20px; height: 20px;">
+                        </span>
+                    </div>
                     {% endif %}
                 </form>
                 <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-outline-primary me-2">Editar</a>
@@ -57,4 +68,22 @@
     <p>No tienes tareas registradas.</p>
     {% endif %}
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll(".completar-tarea-form");
+    
+        forms.forEach(form => {
+            form.addEventListener("submit", function (e) {
+                const recompensa = form.querySelector(".recompensa-msg");
+                if (recompensa) {
+                    recompensa.classList.remove("d-none");
+                    setTimeout(() => {
+                        recompensa.classList.add("d-none");
+                    }, 1500);
+                }
+            });
+        });
+    });
+    </script>
 {% endblock %}

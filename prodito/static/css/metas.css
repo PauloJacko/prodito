@@ -45,3 +45,32 @@
   background-color: #9ca3af;
   border: none;
 }
+
+.recompensa-msg {
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  animation: floatUp 1.5s ease-out forwards;
+  z-index: 1000;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+}

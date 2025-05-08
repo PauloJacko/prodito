@@ -13,10 +13,31 @@
       {% csrf_token %}
       {{ form.as_p }}
       <div class="text-center mt-3">
-      <button type="submit" class="btn btn-success">Guardar Meta</button>
-      <a href="{% url 'metas' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success guardar-meta-btn">Guardar Meta</button>
+        <a href="{% url 'metas' %}" class="btn btn-secondary">Cancelar</a>
+        <span class="recompensa-msg position-absolute d-none">
+          +3PP
+          <img src="https://res.cloudinary.com/dtnttrleq/image/upload/v1746716911/prodito_feliz_suyaob-removebg-preview_ht5uf3.png" alt="Prodito feliz" style="width: 20px; height: 20px;">
+        </span>
       </div>
     </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnGuardarMeta = document.querySelector(".guardar-meta-btn");
+    const recompensaMeta = document.querySelector(".guardar-meta-btn + .recompensa-msg");
+  
+    if (btnGuardarMeta && recompensaMeta) {
+      btnGuardarMeta.addEventListener("click", function () {
+        recompensaMeta.classList.remove("d-none");
+        setTimeout(() => {
+          recompensaMeta.classList.add("d-none");
+        }, 1500);
+      });
+    }
+  });
+  </script>
+  
 {% endblock %}
