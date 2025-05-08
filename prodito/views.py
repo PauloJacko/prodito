@@ -19,8 +19,6 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from django.http import JsonResponse
 from tareas.models import Notificacion
-from django.views.decorators.csrf import csrf_exempt
-
 from tareas.models import Task
 
 
@@ -498,6 +496,12 @@ def generar_reporte(request):
     return response
 
 #Notificaciones
+
+@require_POST
+@login_required
+def marcar_notificaciones_mostradas(request):
+    request.session['notificaciones_mostradas'] = True
+    return JsonResponse({'ok': True})
 
 @login_required
 def notificaciones_json(request):

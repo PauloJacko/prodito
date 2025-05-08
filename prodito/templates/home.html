@@ -183,11 +183,17 @@
   </div>
 
 </div>
-
 <script>
   async function cargarNotificaciones() {
+
+    if (sessionStorage.getItem('notificaciones_mostradas')) {
+      return;
+    }
+
     const response = await fetch('/api/notificaciones/');
     const notificaciones = await response.json();
+
+    if (notificaciones.length === 0) return;
 
     const contenedor = document.getElementById('notificaciones');
     contenedor.innerHTML = '';
@@ -214,6 +220,8 @@
 
       contenedor.appendChild(div);
     });
+
+    sessionStorage.setItem('notificaciones_mostradas', 'true');
   }
 
   async function marcarComoLeida(id, divElemento) {
